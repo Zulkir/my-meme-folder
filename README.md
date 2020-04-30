@@ -1,2 +1,2 @@
 # my-meme-folder
-Online service for storing images always ready to post anywhere.
+Online service for having your images always at hand.
