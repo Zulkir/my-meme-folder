@@ -1,30 +1,39 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import DummyDataProvider from "./remote/DummyDataProvider";
+import Folder from "./components/fodler/Folder";
 
-function App() {
-  return (
-      <div className="App">
-        <header style={headerStyle}>
-          <div style={logoStyle}>My Meme Folder</div>
-        </header>
-        <nav style={navStyle}>
-          <span style={menuItemStyle}>My Folder</span>
-          <span style={menuItemStyle}>Explore</span>
-        </nav>
-        <aside style={treeViewStyle}>
-          <div>qwe</div>
-          <div>asd</div>
-          <div>zxc</div>
-        </aside>
-        <main style={mainStyle}>
-          MAIN
-        </main>
-        <footer style={footerStyle}>
-          Footer
-        </footer>
-      </div>
-  );
+class App extends React.Component {
+    render() {
+        const dataProvider = new DummyDataProvider();
+        const data = dataProvider.generateAllUserData()['1'];
+        console.log(data);
+        return (
+            <div className="App">
+                <header style={headerStyle}>
+                    <div style={logoStyle}>My Meme Folder</div>
+                </header>
+                <nav style={navStyle}>
+                    <span style={menuItemStyle}>My Folder</span>
+                    <span style={menuItemStyle}>Explore</span>
+                </nav>
+                <aside style={treeViewStyle}>{
+                    data.folders.map(folder => (
+                        <Folder folder={folder} />
+                    ))
+                }
+                </aside>
+                <main style={mainStyle}>
+                    MAIN
+                </main>
+                <footer style={footerStyle}>
+                    Footer
+                </footer>
+            </div>
+        );
+    }
+
 }
 
 const headerStyle = {
