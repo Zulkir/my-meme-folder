@@ -3,11 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import DummyDataProvider from "./remote/DummyDataProvider";
 import Folder from "./components/fodler/Folder";
+import ImageList from "./components/image-list/ImageList";
 
 class App extends React.Component {
     render() {
         const dataProvider = new DummyDataProvider();
-        const data = dataProvider.generateAllUserData()['1'];
+        const data = dataProvider.getMyFolderPageData('1');
         console.log(data);
         return (
             <div className="App">
@@ -25,11 +26,11 @@ class App extends React.Component {
                 }
                 </aside>
                 <main style={mainStyle}>
-                    MAIN
+                    <ImageList
+                        user="1"
+                        folderPath="asd"
+                    />
                 </main>
-                <footer style={footerStyle}>
-                    Footer
-                </footer>
             </div>
         );
     }

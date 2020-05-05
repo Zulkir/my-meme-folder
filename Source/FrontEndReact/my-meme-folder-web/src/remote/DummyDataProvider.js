@@ -1,12 +1,30 @@
+import logo192 from "./logo192.png"
+
 export default class DummyDataProvider{
     constructor() {
         this.allUserData = this.generateAllUserData();
     }
 
+    // public
     getMyFolderPageData(userId) {
         return this.allUserData[userId];
     }
 
+    getImageList(user, folderPath) {
+        if (user === '1') {
+            const items = [];
+            for (let i = 0; i < 20; i++) {
+                items.push({
+                    title: "Meme " + i,
+                    thumbnailSrc: logo192
+                });
+            }
+            return items;
+        }
+        throw new Error("User not found");
+    }
+
+    // private
     generateAllUserData() {
         return {
             '1': {
