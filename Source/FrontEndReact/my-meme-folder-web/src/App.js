@@ -1,37 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import DummyDataProvider from "./remote/DummyDataProvider";
-import Folder from "./components/fodler/Folder";
-import ImageList from "./components/image-list/ImageList";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import MyFolderPage from "./pages/MyFolderPage";
 
 class App extends React.Component {
     render() {
-        const dataProvider = new DummyDataProvider();
-        const data = dataProvider.getMyFolderPageData('1');
-        console.log(data);
         return (
-            <div className="App">
-                <header style={headerStyle}>
-                    <div style={logoStyle}>My Meme Folder</div>
-                </header>
-                <nav style={navStyle}>
-                    <span style={menuItemStyle}>My Folder</span>
-                    <span style={menuItemStyle}>Explore</span>
-                </nav>
-                <aside style={treeViewStyle}>{
-                    data.folders.map(folder => (
-                        <Folder folder={folder} />
-                    ))
-                }
-                </aside>
-                <main style={mainStyle}>
-                    <ImageList
-                        user="1"
-                        folderPath="asd"
-                    />
-                </main>
-            </div>
+            <Router>
+                <div className="App">
+                    <header style={headerStyle}>
+                        <div style={logoStyle}>My Meme Folder</div>
+                    </header>
+                    <nav style={navStyle}>
+                        <Link to="/myfolder" style={menuItemStyle}>My Folder</Link>
+                        <Link to="/" style={menuItemStyle}>Explore</Link>
+                    </nav>
+                    <Route exact path="/" >
+                        <Home />
+                    </Route>
+                    <Route path="/myfolder" >
+                        <MyFolderPage />
+                    </Route>
+                </div>
+            </Router>
         );
     }
 
@@ -65,26 +57,8 @@ const navStyle = {
   borderStyle: 'solid',
 }
 
-const treeViewStyle = {
-  float: 'left',
-  width: '200px'
-}
-
 const menuItemStyle = {
   padding: '10px 20px'
-}
-
-const mainStyle = {
-  marginLeft: '200px'
-}
-
-const footerStyle ={
-  backgroundColor: '#820',
-  color: '#fff',
-
-  clear: 'both',
-  height: '100px',
-  lineHeight: '100px'
 }
 
 export default App;
