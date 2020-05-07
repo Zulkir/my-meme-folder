@@ -12,4 +12,9 @@ public class HomeController {
     public List<ImageWithThumbnail> getHomeImageList() {
         return new ArrayList<>();
     }
+
+    @GetMapping(path = "/api/images-at/")
+    public List<ImageWithThumbnail> getHomeImageList2() {
+        return new ArrayList<>();
+    }
 }
