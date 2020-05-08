@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import MyFolderPage from "./pages/MyFolderPage";
+import LoginPage from "./pages/LoginPage";
 
 class App extends React.Component {
     render() {
@@ -17,7 +18,10 @@ class App extends React.Component {
                         <Link to="/" style={menuItemStyle}>Explore</Link>
                     </nav>
                     <Route exact path="/" >
-                        <Home />
+                        <HomePage />
+                    </Route>
+                    <Route path="/login" >
+                        <LoginPage />
                     </Route>
                     <Route path="/myfolder" >
                         <MyFolderPage />

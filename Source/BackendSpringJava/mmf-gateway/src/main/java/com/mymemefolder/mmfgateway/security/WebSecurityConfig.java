@@ -15,15 +15,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.setStatus(403))
+                .accessDeniedHandler((request, response, authException) -> response.setStatus(403))
                 .and()
             .formLogin()
-                .successHandler((request, response, authentication) -> {})
-                .failureHandler((request, response, exception) -> response.setStatus(403));
+                .loginProcessingUrl("/api/login")
+                .successHandler((request, response, authentication) -> response.setStatus(200))
+                .failureHandler((request, response, exception) -> response.setStatus(403))
+                .and()
+            // todo: enable for production
+            .csrf()
+                .disable();
     }
 
     @Bean
