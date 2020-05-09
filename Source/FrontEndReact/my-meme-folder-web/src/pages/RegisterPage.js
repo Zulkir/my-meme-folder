@@ -1,15 +1,16 @@
 import React from "react";
 import "./LoginRegisterPages.css"
-import {Link} from "react-router-dom";
 import axios from "axios";
-import querystring from 'querystring';
+import {Link} from "react-router-dom";
 
-export default class LoginPage extends React.Component {
+export default class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            email: "",
+            password: "",
+            passwordAgain: ""
         }
     }
 
@@ -19,16 +20,10 @@ export default class LoginPage extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        axios({
-            url: '/api/login',
-            method: 'POST',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: querystring.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
+        axios.post('/api/register', {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
         });
         // todo: then
     }
@@ -38,7 +33,7 @@ export default class LoginPage extends React.Component {
             <main>
                 <form className="login-form" onSubmit={this.handleSubmit}>
                     <div className="login-form-title">
-                        Login
+                        Register
                     </div>
                     <div>
                         <input
@@ -46,6 +41,14 @@ export default class LoginPage extends React.Component {
                             placeholder="User name"
                             value={this.state.username}
                             onChange={this.setTextState.bind(this, "username")}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Email address"
+                            value={this.state.email}
+                            onChange={this.setTextState.bind(this, "email")}
                         />
                     </div>
                     <div>
@@ -58,16 +61,21 @@ export default class LoginPage extends React.Component {
                     </div>
                     <div>
                         <input
+                            type="password"
+                            placeholder="Repeat password"
+                            value={this.state.passwordAgain}
+                            onChange={this.setTextState.bind(this, "passwordAgain")}
+                        />
+                    </div>
+                    <div>
+                        <input
                             className="login-form-submit"
                             type="submit"
                             value="Submit"
                         />
                     </div>
                     <div>
-                        <Link to="/forgot-password">Forgot password?</Link>
-                    </div>
-                    <div>
-                        <Link to="/register">Register</Link>
+                        <Link to="/login">Login with existing account</Link>
                     </div>
                 </form>
             </main>

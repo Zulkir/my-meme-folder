@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import MyFolderPage from "./pages/MyFolderPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 class App extends React.Component {
     render() {
@@ -22,6 +23,9 @@ class App extends React.Component {
                     </Route>
                     <Route path="/login" >
                         <LoginPage />
+                    </Route>
+                    <Route path="/register" >
+                        <RegisterPage />
                     </Route>
                     <Route path="/myfolder" >
                         <MyFolderPage />
