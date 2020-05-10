@@ -10,7 +10,7 @@ export default class ImageList extends React.Component {
         return (
               <div className="image-list-overall">{
                     imageList.map(img => (
-                        <div className="image-list-item">
+                        <div className="image-list-item" key={img.id}>
                             <img
                                 src={img.thumbnailSrc}
                                 alt="img.title"

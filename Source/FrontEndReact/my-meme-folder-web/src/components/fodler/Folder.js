@@ -8,6 +8,7 @@ export default class Folder extends React.Component {
     }
 
     render() {
+        const fulLPath = this.props.fullPath;
         return (
             <div className="folder-wrapper">
                 <div
@@ -22,9 +23,12 @@ export default class Folder extends React.Component {
                     className="folder-children-container"
                     style={{display: this.state.collapsed ? 'none' : 'block'}}
                 >{
-                    this.props.folder.children.map(child => (
-                        <Folder folder={child} />
-                    ))}
+                    this.props.folder.children.map(child => {
+                        const childFullPath = `${fulLPath}/${child.name}`;
+                        return (
+                            <Folder folder={child} key={childFullPath} fullPath={childFullPath}/>
+                        );
+                    })}
                 </div>
             </div>
         );

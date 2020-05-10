@@ -15,6 +15,7 @@ export default class DummyDataProvider{
             const items = [];
             for (let i = 0; i < 20; i++) {
                 items.push({
+                    id: i,
                     title: "Meme " + i,
                     thumbnailSrc: logo192
                 });

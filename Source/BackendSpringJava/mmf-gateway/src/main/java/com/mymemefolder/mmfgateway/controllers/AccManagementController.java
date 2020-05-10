@@ -2,9 +2,9 @@ package com.mymemefolder.mmfgateway.controllers;
 
 import com.mymemefolder.mmfgateway.repositories.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 public class AccManagementController {
@@ -14,8 +14,17 @@ public class AccManagementController {
         this.userService = userService;
     }
 
+    @GetMapping("/api/user-info")
+    @ResponseBody
+    public UserInfoViewData getUserInfo(Principal principal) {
+        var user = userService.getUserByName(principal.getName());
+        return user
+            .map(value -> new UserInfoViewData(value.getUsername(), value.getEmail()))
+            .orElse(null);
+    }
+
     @PostMapping("/api/register")
-    public ResponseEntity<?> Register(@RequestBody RegistrationInfo registrationInfo) {
+    public ResponseEntity<?> register(@RequestBody RegistrationInfo registrationInfo) {
         var result = userService.registerUser(
             registrationInfo.getUsername(),
             registrationInfo.getPassword(),

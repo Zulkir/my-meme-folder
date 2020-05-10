@@ -10,9 +10,12 @@ export default class MyFolderPage extends React.Component {
         return (
             <React.Fragment>
                 <aside style={treeViewStyle}>{
-                    data.folders.map(folder => (
-                        <Folder folder={folder} />
-                    ))
+                    data.folders.map(folder => {
+                        const fullPath = `/${folder.name}`;
+                        return (
+                            <Folder folder={folder} key={fullPath} fullPath={fullPath}/>
+                        );
+                    })
                 }
                 </aside>
                 <main style={mainStyle}>

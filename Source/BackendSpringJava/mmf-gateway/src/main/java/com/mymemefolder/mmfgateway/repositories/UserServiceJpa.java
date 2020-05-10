@@ -17,7 +17,7 @@ public class UserServiceJpa implements UserService {
     }
 
     public Optional<User> getUserByName(String name) {
-        return Optional.of(repository.findByUsername(name));
+        return Optional.ofNullable(repository.findByUsername(name));
     }
 
     public ActionResult registerUser(String username, String password, String email) {

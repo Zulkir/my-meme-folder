@@ -1,18 +1,49 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import axios from "axios";
 import HomePage from "./pages/HomePage";
 import MyFolderPage from "./pages/MyFolderPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
 class App extends React.Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            userInfo: null
+        };
+    }
+
+    componentDidMount() {
+        axios.get("/api/user-info")
+            .then(res => {
+                this.setState({userInfo: res.data})
+            })
+            .catch(e => {
+            });
+    }
+
     render() {
         return (
             <Router>
                 <div className="App">
                     <header style={headerStyle}>
                         <div style={logoStyle}>My Meme Folder</div>
+                        {
+                            this.state.userInfo ? (
+                                <div style={userInfoStyle}>
+                                    Welcome, {this.state.userInfo.username}! <br/>
+                                    <Link to={"/logout"}>Logout</Link>
+                                </div>
+                            ) : (
+                                <div style={userInfoStyle}>
+                                    Welcome! Please login to view your folder. <br/>
+                                    <Link to={"/login"}>Login</Link> <br/>
+                                    <Link to={"/register"}>Register</Link>
+                                </div>
+                            )
+                        }
                     </header>
                     <nav style={navStyle}>
                         <Link to="/myfolder" style={menuItemStyle}>My Folder</Link>
@@ -52,6 +83,13 @@ const logoStyle = {
   fontWeight: 'bold',
   margin: '10px 20px',
   lineHeight: '80px',
+}
+
+const userInfoStyle = {
+    padding: '10px',
+
+    float: 'right',
+    textAlign: 'right'
 }
 
 const navStyle = {
