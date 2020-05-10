@@ -9,7 +9,8 @@ export default class LoginPage extends React.Component {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            errorMessage: null
         }
     }
 
@@ -19,6 +20,8 @@ export default class LoginPage extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        if (!this.validateInput())
+            return;
         axios({
             url: '/api/login',
             method: 'POST',
@@ -29,8 +32,32 @@ export default class LoginPage extends React.Component {
                 username: this.state.username,
                 password: this.state.password
             })
+        }).then(res => {
+            window.location.href = "/myfolder";
+        }).catch(e => {
+            let res = e.response;
+            if (res.status === 403) {
+                this.setState({errorMessage: "Invalid username or password"})
+            } else {
+                console.log(res);
+                this.setState({errorMessage: `Error ${res.status}: ${res.statusText}`});
+            }
         });
-        // todo: then
+    }
+
+    validateInput = () => {
+        if (!this.state.username || this.state.username.length === 0) {
+            this.setState({errorMessage: "Username cannot be empty."});
+            return false;
+        }
+        if (!this.state.password || this.state.password.length === 0) {
+            this.setState({errorMessage: "Password cannot be empty."});
+            return false;
+        }
+        if (this.state.errorMessage) {
+            this.setState({errorMessage: null});
+        }
+        return true;
     }
 
     render() {
@@ -39,6 +66,11 @@ export default class LoginPage extends React.Component {
                 <form className="login-form" onSubmit={this.handleSubmit}>
                     <div className="login-form-title">
                         Login
+                    </div>
+                    <div>
+                        <span className={this.state.errorMessage ? "login-form-error" : "login-form-prompt"}>
+                            {this.state.errorMessage || "Please enter your credentials to login."}
+                        </span>
                     </div>
                     <div>
                         <input

@@ -17,6 +17,21 @@ main {
     font-weight: bold;
 }
 
+.login-form-prompt {
+    margin: 10px;
+    /*font-weight: bold;*/
+}
+
+.login-form-error {
+    margin: 10px;
+    font-weight: bold;
+    color: #ff3030;
+    /*
+    border-style: dotted;
+    border-color: red;
+    border-width: 1px;*/
+}
+
 .login-form div input {
     width: 300px;
 

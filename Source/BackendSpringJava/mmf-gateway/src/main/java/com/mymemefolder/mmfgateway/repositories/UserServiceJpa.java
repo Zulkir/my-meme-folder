@@ -22,12 +22,12 @@ public class UserServiceJpa implements UserService {
 
     public ActionResult registerUser(String username, String password, String email) {
         // todo validate better
-        if (username == null)
-            return ActionResult.failure("username cannot be null.");
-        if (password == null)
-            return ActionResult.failure("password cannot be null.");
-        if (email == null)
-            return ActionResult.failure("email cannot be null.");
+        if (username == null || username.length() == 0)
+            return ActionResult.failure("Username cannot be empty.");
+        if (password == null || password.length() == 0)
+            return ActionResult.failure("Password cannot be empty.");
+        if (email == null || email.length() == 0)
+            return ActionResult.failure("Email cannot be empty.");
         if (repository.findByUsername(username) != null)
             return ActionResult.failure("User with this name already exists.");
         var user = new User();

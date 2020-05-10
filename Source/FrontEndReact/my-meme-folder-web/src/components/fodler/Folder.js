@@ -13,7 +13,6 @@ export default class Folder extends React.Component {
                 <div
                     className="folder-header"
                     onClick={e => this.setState({
-                        ...this.state,
                         collapsed: !this.state.collapsed
                     })}
                 >
