@@ -3,12 +3,12 @@ package com.mymemefolder.mmfgateway.controllers;
 public class ImageWithThumbnail {
     private String name;
     private String url;
-    private byte[] thumbnail;
+    private String thumbnailSrc;
 
-    public ImageWithThumbnail(String name, String url, byte[] thumbnail) {
+    public ImageWithThumbnail(String name, String url, String thumbnailSrc) {
         this.name = name;
         this.url = url;
-        this.thumbnail = thumbnail;
+        this.thumbnailSrc = thumbnailSrc;
     }
 
     //region Getters Setters
@@ -28,12 +28,12 @@ public class ImageWithThumbnail {
         this.url = url;
     }
 
-    public byte[] getThumbnail() {
-        return thumbnail;
+    public String getThumbnailSrc() {
+        return thumbnailSrc;
     }
 
-    public void setThumbnail(byte[] thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnailSrc(String thumbnailSrc) {
+        this.thumbnailSrc = thumbnailSrc;
     }
     //endregion
 }

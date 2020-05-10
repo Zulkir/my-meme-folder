@@ -9,16 +9,37 @@ export default class Folder extends React.Component {
 
     render() {
         const fulLPath = this.props.fullPath;
+        const isClickable = this.props.folder.children.length > 0;
         return (
             <div className="folder-wrapper">
-                <div
-                    className="folder-header"
-                    onClick={e => this.setState({
-                        collapsed: !this.state.collapsed
-                    })}
-                >
-                    {this.props.folder.name}
-                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div
+                                    className={
+                                        "folder-button" +
+                                        (isClickable ? " clickable" : "")
+                                    }
+                                    onClick={e => this.setState({
+                                        collapsed: !this.state.collapsed
+                                    })}
+                                >
+                                    <span>{isClickable ? this.state.collapsed ? "＋" : "－" : "○"}</span>
+                                </div>
+                            </td>
+                            <td
+                                className={
+                                    "folder-header" +
+                                    (this.props.isSelected ? " selected" : "")
+                                }
+                                onClick={e => this.props.onSelect(fulLPath)}
+                            >
+                                <span>{this.props.folder.name}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div
                     className="folder-children-container"
                     style={{display: this.state.collapsed ? 'none' : 'block'}}
@@ -26,7 +47,12 @@ export default class Folder extends React.Component {
                     this.props.folder.children.map(child => {
                         const childFullPath = `${fulLPath}/${child.name}`;
                         return (
-                            <Folder folder={child} key={childFullPath} fullPath={childFullPath}/>
+                            <Folder
+                                folder={child}
+                                key={childFullPath}
+                                fullPath={childFullPath}
+                                onSelect={this.props.onSelect}
+                            />
                         );
                     })}
                 </div>

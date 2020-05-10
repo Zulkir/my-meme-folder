@@ -1,27 +1,63 @@
 import ImageList from "../components/image-list/ImageList";
 import React from "react";
 import Folder from "../components/fodler/Folder";
-import DummyDataProvider from "../remote/DummyDataProvider";
+import axios from "axios";
 
 export default class MyFolderPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            structure: [],
+            currentPath: "/"
+        };
+    }
+
+    componentDidMount() {
+        this.refreshStructure();
+    }
+
+    refreshStructure = () => {
+        axios.get("/api/myfolder/structure")
+            .then(res => {
+                if (res.status === 200)
+                    this.setState({structure: res.data});
+            })
+            .catch(e => {
+                this.setState({structure: []});
+                console.log(e);
+            });
+    }
+
+    move = (path) => {
+        this.setState({currentPath: path});
+        this.refreshImages(path);
+    }
+
+    refreshImages = (path) => {
+
+    }
+
     render() {
-        const dataProvider = new DummyDataProvider();
-        const data = dataProvider.getMyFolderPageData('1');
         return (
             <React.Fragment>
                 <aside style={treeViewStyle}>{
-                    data.folders.map(folder => {
+                    this.state.structure.map(folder => {
                         const fullPath = `/${folder.name}`;
                         return (
-                            <Folder folder={folder} key={fullPath} fullPath={fullPath}/>
+                            <Folder
+                                folder={folder}
+                                key={fullPath}
+                                fullPath={fullPath}
+                                isSelected={this.state.currentPath === fullPath}
+                                onSelect={this.move}
+                            />
                         );
                     })
                 }
                 </aside>
                 <main style={mainStyle}>
                     <ImageList
-                        user="1"
-                        folderPath="asd"
+                        folderPath={this.state.currentPath}
                     />
                 </main>
             </React.Fragment>
@@ -35,5 +71,8 @@ const mainStyle = {
 
 const treeViewStyle = {
     float: 'left',
-    width: '200px'
+    width: '200px',
+    margin: '5px',
+    backgroundColor: '#3b1616',
+    borderRadius: '10px'
 }

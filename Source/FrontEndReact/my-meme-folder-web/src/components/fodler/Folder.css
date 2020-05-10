@@ -1,23 +1,44 @@
 .folder-wrapper {
-    background-color: #442200;
+    text-align: left;
+}
+.folder-wrapper table tbody tr td {
+    padding: 0;
+}
 
-    border-radius: 6px;
+.folder-button {
+    cursor: pointer;
 
-    /*padding: 5px 5px 0px 5px;*/
+    font-size: 18px;
+    font-weight: bold;
+
+    text-align: center;
+    margin: 2px;
+
+    /*background-color: red;*/
+    border-radius: 8px;
+}
+
+.folder-button span {
+    padding: 0px 5px;
 }
 
 .folder-header {
-    background-color: #994400;
-
-    border-radius: 6px;
-
-    margin: 5px;
-    padding: 5px;
-
+    cursor: pointer;
     font-size: 18px;
+    margin: 2px;
+    background-color: #a33900;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.folder-header.selected {
+    background-color: #dc5600;
+}
+
+.folder-header span {
+    padding: 0px 10px;
 }
 
 .folder-children-container{
-    padding-left: 20px;
-    padding-bottom: 5px;
+    padding-left: 15px;
 }

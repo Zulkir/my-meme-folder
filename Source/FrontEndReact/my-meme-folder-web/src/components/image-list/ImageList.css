@@ -1,7 +1,23 @@
 .image-list-overall {
-
+    padding: 5px;
 }
 
 .image-list-item {
-    float: left
+    float: left;
+
+    width: 210px;
+    height: 200px;
+    padding: 5px;
+
+    cursor: pointer;
+}
+
+.image-list-item:hover {
+    background-color: #3b1616;
+    border-radius: 10px;
+}
+
+.image-list-item img {
+    max-width: 196px;
+    max-height: 196px;
 }
