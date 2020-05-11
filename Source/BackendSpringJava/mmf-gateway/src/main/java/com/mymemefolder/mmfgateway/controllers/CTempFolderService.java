@@ -20,8 +20,8 @@ public class CTempFolderService implements FolderService {
     }
 
     @Override
-    public List<Folder> newFolder(User user, String path) throws InvalidOperationException {
-        var realFolder = new File("C:/Temp/mmf-root/" + user.getUsername() + path);
+    public List<Folder> newFolder(User user, String path, String newFolderName) throws InvalidOperationException {
+        var realFolder = new File("C:/Temp/mmf-root/" + user.getUsername() + path + "/" + newFolderName);
         if (!realFolder.mkdirs())
             throw new InvalidOperationException("Failed to create the folder");
         return getStructure(user);

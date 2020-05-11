@@ -35,8 +35,28 @@
     background-color: #dc5600;
 }
 
+.folder-header-edit {
+    font-size: 18px;
+    margin: 2px;
+    width: 95%;
+    border-radius: 10px;
+}
+
 .folder-header span {
     padding: 0px 10px;
+}
+
+.folder-current-buttons {
+    text-align: right;
+}
+
+.folder-current-buttons span {
+    cursor: pointer;
+    margin: 0px 2px;
+    padding: 0px 2px;
+    background-color: #dc5600;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
 .folder-children-container{

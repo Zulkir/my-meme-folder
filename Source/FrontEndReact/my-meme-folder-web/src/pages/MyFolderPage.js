@@ -21,7 +21,7 @@ export default class MyFolderPage extends React.Component {
         axios.get(`/api/folder/${username}/structure`)
             .then(res => {
                 if (res.status === 200)
-                    this.setState({structure: res.data});
+                    this.updateTree(res.data);
             })
             .catch(e => {
                 this.setState({structure: []});
@@ -29,11 +29,16 @@ export default class MyFolderPage extends React.Component {
             });
     }
 
+    updateTree = (newTree) => {
+        this.setState({structure: newTree});
+    }
+
     move = (path) => {
         this.setState({currentPath: path});
     }
 
     render() {
+        const username = this.props.match.params.username;
         return (
             <React.Fragment>
                 <aside style={treeViewStyle}>{
@@ -45,7 +50,9 @@ export default class MyFolderPage extends React.Component {
                                 key={fullPath}
                                 fullPath={fullPath}
                                 currentPath={this.state.currentPath}
+                                username={username}
                                 onSelect={this.move}
+                                onUpdate={this.updateTree}
                             />
                         );
                     })

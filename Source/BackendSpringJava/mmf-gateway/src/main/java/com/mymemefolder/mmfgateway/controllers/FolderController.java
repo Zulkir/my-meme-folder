@@ -28,10 +28,10 @@ public class FolderController {
 
     @PostMapping("/api/folder/{username}/structure")
     @ResponseBody
-    public List<Folder> newFolder(Principal principal, @PathVariable String username, String path)
+    public List<Folder> newFolder(Principal principal, @PathVariable String username, String path, String newName)
             throws UnauthorizedActionException, DataNotFoundException, InvalidOperationException {
         var user = getPrincipalUser(principal, username);
-        return folderService.newFolder(user, path);
+        return folderService.newFolder(user, path, newName);
     }
 
     @PutMapping("/api/folder/{username}/structure")
