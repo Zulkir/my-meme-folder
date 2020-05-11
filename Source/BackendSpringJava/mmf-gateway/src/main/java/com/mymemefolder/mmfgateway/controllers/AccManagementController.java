@@ -17,7 +17,7 @@ public class AccManagementController {
     @GetMapping("/api/user-info")
     @ResponseBody
     public UserInfoViewData getUserInfo(Principal principal) {
-        var user = userService.getUserByName(principal.getName());
+        var user = userService.findUserByName(principal.getName());
         return user
             .map(value -> new UserInfoViewData(value.getUsername(), value.getEmail()))
             .orElse(null);

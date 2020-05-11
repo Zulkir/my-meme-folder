@@ -17,7 +17,8 @@ export default class MyFolderPage extends React.Component {
     }
 
     refreshStructure = () => {
-        axios.get("/api/myfolder/structure")
+        const username = this.props.match.params.username;
+        axios.get(`/api/folder/${username}/structure`)
             .then(res => {
                 if (res.status === 200)
                     this.setState({structure: res.data});
@@ -30,11 +31,6 @@ export default class MyFolderPage extends React.Component {
 
     move = (path) => {
         this.setState({currentPath: path});
-        this.refreshImages(path);
-    }
-
-    refreshImages = (path) => {
-
     }
 
     render() {
@@ -48,7 +44,7 @@ export default class MyFolderPage extends React.Component {
                                 folder={folder}
                                 key={fullPath}
                                 fullPath={fullPath}
-                                isSelected={this.state.currentPath === fullPath}
+                                currentPath={this.state.currentPath}
                                 onSelect={this.move}
                             />
                         );
@@ -58,6 +54,7 @@ export default class MyFolderPage extends React.Component {
                 <main style={mainStyle}>
                     <ImageList
                         folderPath={this.state.currentPath}
+                        username={this.props.match.params.username}
                     />
                 </main>
             </React.Fragment>

@@ -1,5 +1,6 @@
 package com.mymemefolder.mmfgateway.repositories;
 
+import com.mymemefolder.mmfgateway.controllers.DataNotFoundException;
 import com.mymemefolder.mmfgateway.utils.ActionResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,16 @@ public class UserServiceJpa implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<User> getUserByName(String name) {
+    public Optional<User> findUserByName(String name) {
         return Optional.ofNullable(repository.findByUsername(name));
+    }
+
+    @Override
+    public User getUserByName(String name) throws DataNotFoundException {
+        var user = repository.findByUsername(name);
+        if (user == null)
+            throw new DataNotFoundException("User was not found.");
+        return user;
     }
 
     public ActionResult registerUser(String username, String password, String email) {

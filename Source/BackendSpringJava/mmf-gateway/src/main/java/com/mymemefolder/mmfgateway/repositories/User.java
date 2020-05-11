@@ -16,6 +16,8 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
+    private Boolean folderIsPublic;
+    private Boolean imagesArePublic;
     @Column(columnDefinition = "TEXT")
     private String folderStructure;
 
@@ -87,5 +89,25 @@ public class User implements UserDetails {
 
     public void setFolderStructure(String folderStructure) {
         this.folderStructure = folderStructure;
+    }
+
+    public Boolean getFolderIsPublic() {
+        if (folderIsPublic == null)
+            folderIsPublic = true;
+        return folderIsPublic;
+    }
+
+    public void setFolderIsPublic(Boolean folderIsPublic) {
+        this.folderIsPublic = folderIsPublic;
+    }
+
+    public Boolean getImagesArePublic() {
+        if (imagesArePublic == null)
+            imagesArePublic = true;
+        return imagesArePublic;
+    }
+
+    public void setImagesArePublic(Boolean imagesArePublic) {
+        this.imagesArePublic = imagesArePublic;
     }
 }

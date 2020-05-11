@@ -16,7 +16,7 @@ public class MmfUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userService.getUserByName(username)
+        return userService.findUserByName(username)
             .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 }

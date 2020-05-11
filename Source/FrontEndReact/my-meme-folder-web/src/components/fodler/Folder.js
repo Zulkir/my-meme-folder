@@ -12,34 +12,30 @@ export default class Folder extends React.Component {
         const isClickable = this.props.folder.children.length > 0;
         return (
             <div className="folder-wrapper">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div
-                                    className={
-                                        "folder-button" +
-                                        (isClickable ? " clickable" : "")
-                                    }
-                                    onClick={e => this.setState({
-                                        collapsed: !this.state.collapsed
-                                    })}
-                                >
-                                    <span>{isClickable ? this.state.collapsed ? "＋" : "－" : "○"}</span>
-                                </div>
-                            </td>
-                            <td
-                                className={
-                                    "folder-header" +
-                                    (this.props.isSelected ? " selected" : "")
-                                }
-                                onClick={e => this.props.onSelect(fulLPath)}
-                            >
-                                <span>{this.props.folder.name}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <table><tbody><tr>
+                    <td>
+                        <div
+                            className={
+                                "folder-button" +
+                                (isClickable ? " clickable" : "")
+                            }
+                            onClick={e => this.setState({
+                                collapsed: !this.state.collapsed
+                            })}
+                        >
+                            <span>{isClickable ? this.state.collapsed ? "＋" : "－" : "○"}</span>
+                        </div>
+                    </td>
+                    <td
+                        className={
+                            "folder-header" +
+                            (this.props.currentPath === fulLPath ? " selected" : "")
+                        }
+                        onClick={e => this.props.onSelect(fulLPath)}
+                    >
+                        <span>{this.props.folder.name}</span>
+                    </td>
+                </tr></tbody></table>
                 <div
                     className="folder-children-container"
                     style={{display: this.state.collapsed ? 'none' : 'block'}}
@@ -51,6 +47,7 @@ export default class Folder extends React.Component {
                                 folder={child}
                                 key={childFullPath}
                                 fullPath={childFullPath}
+                                currentPath={this.props.currentPath}
                                 onSelect={this.props.onSelect}
                             />
                         );

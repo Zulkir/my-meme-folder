@@ -38,7 +38,7 @@ class App extends React.Component {
                                 </div>
                             ) : (
                                 <div style={userInfoStyle}>
-                                    Welcome! Please login to view your folder. <br/>
+                                    Welcome! Please login to edit your folder. <br/>
                                     <Link to={"/login"}>Login</Link> <br/>
                                     <Link to={"/register"}>Register</Link>
                                 </div>
@@ -46,21 +46,13 @@ class App extends React.Component {
                         }
                     </header>
                     <nav style={navStyle}>
-                        <Link to="/myfolder" style={menuItemStyle}>My Folder</Link>
+                        <Link to="/folder" style={menuItemStyle}>My Folder</Link>
                         <Link to="/" style={menuItemStyle}>Explore</Link>
                     </nav>
-                    <Route exact path="/" >
-                        <HomePage />
-                    </Route>
-                    <Route path="/login" >
-                        <LoginPage />
-                    </Route>
-                    <Route path="/register" >
-                        <RegisterPage />
-                    </Route>
-                    <Route path="/myfolder" >
-                        <MyFolderPage />
-                    </Route>
+                    <Route exact path="/" component={HomePage} />
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/register" component={RegisterPage} />
+                    <Route path="/folder/:username"  component={MyFolderPage} />
                 </div>
             </Router>
         );

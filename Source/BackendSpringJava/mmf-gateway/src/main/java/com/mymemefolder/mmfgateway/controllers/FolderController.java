@@ -1,79 +1,82 @@
 package com.mymemefolder.mmfgateway.controllers;
 
+import com.mymemefolder.mmfgateway.repositories.User;
 import com.mymemefolder.mmfgateway.repositories.UserService;
-import com.mymemefolder.mmfgateway.security.NeedsLoginException;
-import net.coobird.thumbnailator.Thumbnails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class FolderController {
-    UserService userService;
+    private final UserService userService;
+    private final FolderService folderService;
 
-    public FolderController(UserService userService) {
+    public FolderController(UserService userService, FolderService folderService) {
         this.userService = userService;
+        this.folderService = folderService;
     }
 
-    @GetMapping("/api/myfolder/structure")
+    @GetMapping("/api/folder/{username}/structure")
     @ResponseBody
-    public List<Folder> getFolderStructure(Principal principal) {
-        var user = userService.getUserByName(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("username not found"));
-        //return user.getFolderStructure();
-
-        var root = new File("C:/temp/mmf-root/");
-        var folder = folderFromFileSystem(root);
-        return folder.getChildren();
+    public List<Folder> getFolderStructure(Principal principal, @PathVariable String username)
+            throws DataNotFoundException, DataIsPrivateException {
+        var user = getAuthorizedUser(principal, username);
+        return folderService.getStructure(user);
     }
 
-    private static Folder folderFromFileSystem(File realFolder) {
-        var subDirectories = Optional.ofNullable(realFolder.listFiles(File::isDirectory)).orElseGet(() -> new File[0]);
-        return new Folder(
-            realFolder.getName(),
-            Arrays.stream(subDirectories)
-                .map(FolderController::folderFromFileSystem)
-                .collect(Collectors.toList()));
-    }
-
-    @GetMapping("/api/myfolder/list")
+    @PostMapping("/api/folder/{username}/structure")
     @ResponseBody
-    public List<ImageWithThumbnail> getImageList(Principal principal, String path) throws IOException, NeedsLoginException {
+    public List<Folder> newFolder(Principal principal, @PathVariable String username, String path)
+            throws UnauthorizedActionException, DataNotFoundException, InvalidOperationException {
+        var user = getPrincipalUser(principal, username);
+        return folderService.newFolder(user, path);
+    }
+
+    @PutMapping("/api/folder/{username}/structure")
+    @ResponseBody
+    public List<Folder> renameFolder(Principal principal, @PathVariable String username, String path, String newName)
+            throws UnauthorizedActionException, DataNotFoundException, InvalidOperationException {
+        var user = getPrincipalUser(principal, username);
+        return folderService.renameFolder(user, path, newName);
+    }
+
+    @DeleteMapping("/api/folder/{username}/structure")
+    @ResponseBody
+    public List<Folder> setFolderStructure(Principal principal, @PathVariable String username, String path)
+            throws UnauthorizedActionException, DataNotFoundException, InvalidOperationException {
+        var user = getPrincipalUser(principal, username);
+        return folderService.deleteFolder(user, path);
+    }
+
+    @GetMapping("/api/folder/{username}/images")
+    @ResponseBody
+    public List<ImageWithThumbnail> getImageList(Principal principal, @PathVariable String username, String path)
+            throws IOException, DataNotFoundException, DataIsPrivateException {
+        var user = getAuthorizedUser(principal, username);
+        return folderService.getImageList(user, path);
+    }
+
+    private User getAuthorizedUser(Principal principal, String requestedUsername)
+            throws DataNotFoundException, DataIsPrivateException {
+        var requestedUser = userService.getUserByName(requestedUsername);
+        var principalUser = principal != null
+                ? userService.getUserByName(principal.getName())
+                : null;
+        var isRequestingSelf = principalUser != null && principalUser.getId().equals(requestedUser.getId());
+        if (!requestedUser.getFolderIsPublic() && !isRequestingSelf)
+            throw new DataIsPrivateException("The folder is private.");
+        return requestedUser;
+    }
+
+    private User getPrincipalUser(Principal principal, String requestedUsername)
+            throws DataNotFoundException, UnauthorizedActionException {
         if (principal == null)
-            throw new NeedsLoginException();
-        var root = new File("C:/temp/mmf-root" + path);
-        var list = new ArrayList<ImageWithThumbnail>();
-        var files = root.listFiles();
-        if (files != null)
-            for (var file : files) {
-                if (file.getName().endsWith(".png") ||
-                    file.getName().endsWith(".jpg")) {
-                    var thumbnailBase64 = fileToThumbnailBase64(file);
-                    var iwt = new ImageWithThumbnail(
-                        file.getName(),
-                        path + "/" + file.getName(),
-                        "data:image/jpg;base64, " + thumbnailBase64);
-                    list.add(iwt);
-                }
-            }
-        return list;
-    }
-
-    private static String fileToThumbnailBase64(File file) throws IOException {
-        try (var stream = new ByteArrayOutputStream()) {
-            Thumbnails.of(file)
-                .size(196, 196)
-                .keepAspectRatio(true)
-                .outputFormat("jpg")
-                .toOutputStream(stream);
-            return Base64.getEncoder().encodeToString(stream.toByteArray());
-        }
+            throw new UnauthorizedActionException("Can only be modified by user himself.");
+        var principalUser = userService.getUserByName(principal.getName());
+        if (!principalUser.getUsername().equals(requestedUsername))
+            throw new UnauthorizedActionException("Can only be modified by user himself.");
+        return principalUser;
     }
 }

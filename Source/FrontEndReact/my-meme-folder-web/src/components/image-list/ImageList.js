@@ -13,7 +13,8 @@ export default class ImageList extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.folderPath === prevProps.folderPath)
             return;
-        axios.get("/api/myfolder/list?path=" + encodeURI(this.props.folderPath))
+        const username = this.props.username;
+        axios.get(`/api/folder/${username}/images?path=${encodeURI(this.props.folderPath)}`)
             .then(res => {
                 this.setState({imagesWithThumbnails: res.data})
             })

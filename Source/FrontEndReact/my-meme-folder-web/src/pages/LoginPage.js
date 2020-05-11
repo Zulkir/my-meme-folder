@@ -33,7 +33,7 @@ export default class LoginPage extends React.Component {
                 password: this.state.password
             })
         }).then(res => {
-            window.location.href = "/myfolder";
+            this.props.history.push(`/folder/${this.state.username}/`);
         }).catch(e => {
             let res = e.response;
             if (res.status === 403) {
