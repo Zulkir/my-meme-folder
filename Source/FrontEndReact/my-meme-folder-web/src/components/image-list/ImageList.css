@@ -21,3 +21,39 @@
     max-width: 196px;
     max-height: 196px;
 }
+
+.modal {
+    display: inline-block;
+    position: fixed;
+    top: 100px;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    width: 720px;
+    /*height: 800px;*/
+    margin: auto;
+
+    background-color: #3b1616;
+    text-align: center;
+
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal-content {
+    /*background-color: #282c34;*/
+    padding: 10px;
+}
+
+.modal-content img {
+    margin: 10px;
+    width: 680px;
+
+}

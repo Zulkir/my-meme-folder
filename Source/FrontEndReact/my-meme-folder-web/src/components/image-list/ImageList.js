@@ -59,19 +59,21 @@ export default class ImageList extends React.Component {
                     <Modal
                         appElement={document.querySelector(".App")}
                         isOpen={this.state.editMode}
-                        onAfterOpen={console.log}
+                        onAfterOpen={() => {}}
                         onRequestClose={this.closeImage}
                         style={modalStyle}
                         contentLabel="Example Modal"
+                        className="modal"
+                        overlayClassName="modal-overlay"
                     >{
                         this.state.editMode ? (
-                            <React.Fragment>
-                                <span>ASDASD ASD ASD AS D D</span>
+                            <div className="modal-content">
                                 <img
                                     src={this.state.editImage.thumbnailSrc}
                                     alt="img.title"
                                 />
-                            </React.Fragment>
+                                <div>{this.state.editImage.name}</div>
+                            </div>
                         ) : (<React.Fragment/>)
                     }</Modal>
               </div>

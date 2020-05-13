@@ -56,8 +56,9 @@ public class CTempFolderService implements FolderService {
                     var thumbnailBase64 = fileToThumbnailBase64(file);
                     var iwt = new ImageWithThumbnail(
                             file.getName(),
-                            path + "/" + file.getName(),
-                            "data:image/jpg;base64, " + thumbnailBase64);
+                            "from-disc test-tag",
+                            "data:image/jpg;base64, " + thumbnailBase64,
+                            path + "/" + file.getName());
                     list.add(iwt);
                 }
             }

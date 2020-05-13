@@ -7,7 +7,8 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String path;
+    private String key;
+    private String userFolderPath;
     private String name;
     private String tags;
     private String fullImageSource;
@@ -22,12 +23,20 @@ public class Image {
         this.id = id;
     }
 
-    public String getPath() {
-        return path;
+    public String getKey() {
+        return key;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setKey(String path) {
+        this.key = path;
+    }
+
+    public String getUserFolderPath() {
+        return userFolderPath;
+    }
+
+    public void setUserFolderPath(String userFolderPath) {
+        this.userFolderPath = userFolderPath;
     }
 
     public String getName() {

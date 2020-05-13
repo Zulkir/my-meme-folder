@@ -3,6 +3,7 @@ package com.mymemefolder.mmfgateway.repositories;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JpaImageService implements ImageService {
@@ -13,7 +14,12 @@ public class JpaImageService implements ImageService {
     }
 
     @Override
-    public List<Image> findByPath(String path) {
-        return repository.findByPath(path);
+    public List<Image> getAllByPath(User user, String path) {
+        return repository.findByUserFolderPath(user + path);
+    }
+
+    @Override
+    public Optional<Image> getByKey(String key) {
+        return Optional.empty();
     }
 }

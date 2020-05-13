@@ -1,17 +1,27 @@
 package com.mymemefolder.mmfgateway.controllers;
 
+import com.mymemefolder.mmfgateway.repositories.Image;
+
 public class ImageWithThumbnail {
     private String name;
-    private String url;
+    private String tags;
     private String thumbnailSrc;
+    private String fullImageSource;
 
-    public ImageWithThumbnail(String name, String url, String thumbnailSrc) {
+    public ImageWithThumbnail(String name, String tags, String thumbnailSrc, String fullImageSource) {
         this.name = name;
-        this.url = url;
+        this.tags = tags;
         this.thumbnailSrc = thumbnailSrc;
+        this.fullImageSource = fullImageSource;
     }
 
-    //region Getters Setters
+    public ImageWithThumbnail(Image image) {
+        name = image.getName();
+        tags = image.getTags();
+        thumbnailSrc = image.getThumbnailSource();
+        fullImageSource = image.getFullImageSource();
+    }
+
     public String getName() {
         return name;
     }
@@ -20,12 +30,12 @@ public class ImageWithThumbnail {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getTags() {
+        return tags;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getThumbnailSrc() {
@@ -35,5 +45,12 @@ public class ImageWithThumbnail {
     public void setThumbnailSrc(String thumbnailSrc) {
         this.thumbnailSrc = thumbnailSrc;
     }
-    //endregion
+
+    public String getFullImageSource() {
+        return fullImageSource;
+    }
+
+    public void setFullImageSource(String fullImageSource) {
+        this.fullImageSource = fullImageSource;
+    }
 }

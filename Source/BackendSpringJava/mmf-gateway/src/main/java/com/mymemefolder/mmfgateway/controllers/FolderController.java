@@ -4,7 +4,6 @@ import com.mymemefolder.mmfgateway.repositories.User;
 import com.mymemefolder.mmfgateway.repositories.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
@@ -48,14 +47,6 @@ public class FolderController {
             throws UnauthorizedActionException, DataNotFoundException, InvalidOperationException {
         var user = getPrincipalUser(principal, username);
         return folderService.deleteFolder(user, path);
-    }
-
-    @GetMapping("/api/folder/{username}/images")
-    @ResponseBody
-    public List<ImageWithThumbnail> getImageList(Principal principal, @PathVariable String username, String path)
-            throws IOException, DataNotFoundException, DataIsPrivateException {
-        var user = getAuthorizedUser(principal, username);
-        return folderService.getImageList(user, path);
     }
 
     private User getAuthorizedUser(Principal principal, String requestedUsername)
