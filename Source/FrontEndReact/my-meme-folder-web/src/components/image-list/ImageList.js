@@ -1,7 +1,9 @@
 import React from "react";
+import Dropzone from 'react-dropzone'
 import "./ImageList.css";
 import axios from "axios";
 import Modal from 'react-modal';
+import ImageUploader from "./ImageUploader";
 
 export default class ImageList extends React.Component {
     constructor(props) {
@@ -42,7 +44,10 @@ export default class ImageList extends React.Component {
 
     render() {
         return (
-              <div className="image-list-overall">{
+              <div className="image-list-overall">
+                  <div className="image-list-item">
+                        <ImageUploader />
+                  </div>{
                     this.state.imagesWithThumbnails.map(img => (
                         <div
                             key={img.name}

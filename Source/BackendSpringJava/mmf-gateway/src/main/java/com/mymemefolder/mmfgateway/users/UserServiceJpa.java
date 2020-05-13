@@ -46,4 +46,9 @@ public class UserServiceJpa implements UserService {
         repository.save(user);
         return ActionResult.success();
     }
+
+    @Override
+    public void updateUser(User user) {
+        repository.save(user);
+    }
 }

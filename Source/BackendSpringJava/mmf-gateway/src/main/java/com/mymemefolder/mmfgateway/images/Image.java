@@ -7,6 +7,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(name="img_key")
     private String key;
     private String userFolderPath;
     private String name;
