@@ -1,6 +1,8 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.folders;
 
-import com.mymemefolder.mmfgateway.repositories.User;
+import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
+import com.mymemefolder.mmfgateway.images.ImageWithThumbnail;
+import com.mymemefolder.mmfgateway.users.User;
 
 import java.io.IOException;
 import java.util.List;

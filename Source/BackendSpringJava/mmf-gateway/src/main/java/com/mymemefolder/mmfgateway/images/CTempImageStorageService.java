@@ -1,5 +1,7 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.images;
 
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
+import com.mymemefolder.mmfgateway.utils.InputStreamWithLength;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

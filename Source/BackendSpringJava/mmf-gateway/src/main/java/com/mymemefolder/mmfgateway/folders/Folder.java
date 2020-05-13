@@ -1,4 +1,4 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.folders;
 
 import java.util.ArrayList;
 import java.util.List;

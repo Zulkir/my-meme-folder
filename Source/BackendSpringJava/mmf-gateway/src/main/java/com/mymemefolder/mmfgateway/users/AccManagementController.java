@@ -1,6 +1,5 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.users;
 
-import com.mymemefolder.mmfgateway.repositories.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

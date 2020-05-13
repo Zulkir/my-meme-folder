@@ -1,11 +1,13 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.users;
 
-public class UserInfoViewData {
+public class RegistrationInfo {
     private String username;
+    private String password;
     private String email;
 
-    public UserInfoViewData(String username, String email) {
+    public RegistrationInfo(String username, String password, String email) {
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
@@ -15,6 +17,14 @@ public class UserInfoViewData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

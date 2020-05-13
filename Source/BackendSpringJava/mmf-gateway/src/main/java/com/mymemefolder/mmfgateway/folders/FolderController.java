@@ -1,7 +1,11 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.folders;
 
-import com.mymemefolder.mmfgateway.repositories.User;
-import com.mymemefolder.mmfgateway.repositories.UserService;
+import com.mymemefolder.mmfgateway.security.DataIsPrivateException;
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
+import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
+import com.mymemefolder.mmfgateway.security.UnauthorizedActionException;
+import com.mymemefolder.mmfgateway.users.User;
+import com.mymemefolder.mmfgateway.users.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

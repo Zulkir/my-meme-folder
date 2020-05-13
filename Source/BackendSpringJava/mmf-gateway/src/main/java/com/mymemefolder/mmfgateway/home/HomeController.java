@@ -1,5 +1,6 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.home;
 
+import com.mymemefolder.mmfgateway.images.ImageWithThumbnail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

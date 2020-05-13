@@ -1,4 +1,6 @@
-package com.mymemefolder.mmfgateway.repositories;
+package com.mymemefolder.mmfgateway.images;
+
+import com.mymemefolder.mmfgateway.users.User;
 
 import java.util.List;
 import java.util.Optional;

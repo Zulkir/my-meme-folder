@@ -1,6 +1,4 @@
-package com.mymemefolder.mmfgateway.controllers;
-
-import com.mymemefolder.mmfgateway.repositories.Image;
+package com.mymemefolder.mmfgateway.images;
 
 public class ImageWithThumbnail {
     private String name;

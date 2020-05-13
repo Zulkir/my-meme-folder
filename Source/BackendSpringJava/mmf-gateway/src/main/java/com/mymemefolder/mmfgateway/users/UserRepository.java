@@ -1,4 +1,4 @@
-package com.mymemefolder.mmfgateway.repositories;
+package com.mymemefolder.mmfgateway.users;
 
 import org.springframework.data.repository.CrudRepository;
 

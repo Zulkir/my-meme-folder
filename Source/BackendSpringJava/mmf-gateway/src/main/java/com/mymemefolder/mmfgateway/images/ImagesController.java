@@ -1,8 +1,9 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.images;
 
-import com.mymemefolder.mmfgateway.repositories.ImageService;
-import com.mymemefolder.mmfgateway.repositories.User;
-import com.mymemefolder.mmfgateway.repositories.UserService;
+import com.mymemefolder.mmfgateway.security.DataIsPrivateException;
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
+import com.mymemefolder.mmfgateway.users.User;
+import com.mymemefolder.mmfgateway.users.UserService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

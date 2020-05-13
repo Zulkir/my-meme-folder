@@ -1,4 +1,4 @@
-package com.mymemefolder.mmfgateway.controllers;
+package com.mymemefolder.mmfgateway.utils;
 
 import java.io.InputStream;
 

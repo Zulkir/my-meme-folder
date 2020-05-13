@@ -1,4 +1,4 @@
-package com.mymemefolder.mmfgateway.repositories;
+package com.mymemefolder.mmfgateway.users;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

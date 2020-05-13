@@ -1,6 +1,6 @@
-package com.mymemefolder.mmfgateway.repositories;
+package com.mymemefolder.mmfgateway.users;
 
-import com.mymemefolder.mmfgateway.controllers.DataNotFoundException;
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.utils.ActionResult;
 
 import java.util.Optional;

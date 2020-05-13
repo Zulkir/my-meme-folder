@@ -1,6 +1,6 @@
 package com.mymemefolder.mmfgateway.security;
 
-import com.mymemefolder.mmfgateway.repositories.UserService;
+import com.mymemefolder.mmfgateway.users.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
