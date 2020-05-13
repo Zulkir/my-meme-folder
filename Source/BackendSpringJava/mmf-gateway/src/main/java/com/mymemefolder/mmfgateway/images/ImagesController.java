@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,11 +31,11 @@ public class ImagesController {
 
     @GetMapping("/api/folder/{username}/images")
     @ResponseBody
-    public List<ImageWithThumbnail> getImageList(Principal principal, @PathVariable String username, String path)
-            throws IOException, DataNotFoundException, DataIsPrivateException {
+    public List<ImageViewData> getImageList(Principal principal, @PathVariable String username, String path)
+            throws DataNotFoundException, DataIsPrivateException {
         var user = getAuthorizedUser(principal, username);
         return imageService.getAllByPath(user, path).stream()
-                .map(ImageWithThumbnail::new)
+                .map(ImageViewData::new)
                 .collect(Collectors.toList());
     }
 

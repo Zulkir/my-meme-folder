@@ -1,18 +1,16 @@
 package com.mymemefolder.mmfgateway.folders;
 
-import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
-import com.mymemefolder.mmfgateway.images.ImageWithThumbnail;
 import com.mymemefolder.mmfgateway.users.User;
-import net.coobird.thumbnailator.Thumbnails;
+import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class CTempFolderService implements FolderService {
     @Override
     public List<Folder> getStructure(User user) {
@@ -46,27 +44,6 @@ public class CTempFolderService implements FolderService {
         return getStructure(user);
     }
 
-    @Override
-    public List<ImageWithThumbnail> getImageList(User user, String path) throws IOException {
-        var root = new File("C:/temp/mmf-root/" + user.getUsername() + path);
-        var list = new ArrayList<ImageWithThumbnail>();
-        var files = root.listFiles();
-        if (files != null)
-            for (var file : files) {
-                if (file.getName().endsWith(".png") ||
-                        file.getName().endsWith(".jpg")) {
-                    var thumbnailBase64 = fileToThumbnailBase64(file);
-                    var iwt = new ImageWithThumbnail(
-                            file.getName(),
-                            "from-disc test-tag",
-                            "data:image/jpg;base64, " + thumbnailBase64,
-                            path + "/" + file.getName());
-                    list.add(iwt);
-                }
-            }
-        return list;
-    }
-
     private static Folder folderFromFileSystem(File realFolder) {
         var subDirectories = Optional.ofNullable(realFolder.listFiles(File::isDirectory)).orElseGet(() -> new File[0]);
         return new Folder(
@@ -74,16 +51,5 @@ public class CTempFolderService implements FolderService {
                 Arrays.stream(subDirectories)
                         .map(CTempFolderService::folderFromFileSystem)
                         .collect(Collectors.toList()));
-    }
-
-    private static String fileToThumbnailBase64(File file) throws IOException {
-        try (var stream = new ByteArrayOutputStream()) {
-            Thumbnails.of(file)
-                    .size(196, 196)
-                    .keepAspectRatio(true)
-                    .outputFormat("jpg")
-                    .toOutputStream(stream);
-            return Base64.getEncoder().encodeToString(stream.toByteArray());
-        }
     }
 }

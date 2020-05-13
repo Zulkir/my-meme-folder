@@ -1,19 +1,19 @@
 package com.mymemefolder.mmfgateway.images;
 
-public class ImageWithThumbnail {
+public class ImageViewData {
     private String name;
     private String tags;
     private String thumbnailSrc;
     private String fullImageSource;
 
-    public ImageWithThumbnail(String name, String tags, String thumbnailSrc, String fullImageSource) {
+    public ImageViewData(String name, String tags, String thumbnailSrc, String fullImageSource) {
         this.name = name;
         this.tags = tags;
         this.thumbnailSrc = thumbnailSrc;
         this.fullImageSource = fullImageSource;
     }
 
-    public ImageWithThumbnail(Image image) {
+    public ImageViewData(Image image) {
         name = image.getName();
         tags = image.getTags();
         thumbnailSrc = image.getThumbnailSource();

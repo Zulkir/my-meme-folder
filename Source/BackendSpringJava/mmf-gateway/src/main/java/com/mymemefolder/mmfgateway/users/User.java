@@ -84,7 +84,9 @@ public class User implements UserDetails {
     }
 
     public String getFolderStructure() {
-        return folderStructure != null ? folderStructure : "[{\"name\":\"Anime\",\"children\":[]},{\"name\":\"Games\",\"children\":[]}]";
+        if (folderStructure == null)
+            folderStructure = "[]";
+        return folderStructure;
     }
 
     public void setFolderStructure(String folderStructure) {

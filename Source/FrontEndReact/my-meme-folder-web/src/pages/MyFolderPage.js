@@ -42,20 +42,14 @@ export default class MyFolderPage extends React.Component {
         return (
             <React.Fragment>
                 <aside style={treeViewStyle}>{
-                    this.state.structure.map(folder => {
-                        const fullPath = `/${folder.name}`;
-                        return (
-                            <Folder
-                                folder={folder}
-                                key={fullPath}
-                                fullPath={fullPath}
-                                currentPath={this.state.currentPath}
-                                username={username}
-                                onSelect={this.move}
-                                onUpdate={this.updateTree}
-                            />
-                        );
-                    })
+                    <Folder
+                        folder={{name: "My Folder", children: this.state.structure}}
+                        fullPath="/"
+                        currentPath={this.state.currentPath}
+                        username={username}
+                        onSelect={this.move}
+                        onUpdate={this.updateTree}
+                    />
                 }
                 </aside>
                 <main style={mainStyle}>

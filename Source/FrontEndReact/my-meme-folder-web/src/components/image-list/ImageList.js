@@ -69,7 +69,7 @@ export default class ImageList extends React.Component {
                         this.state.editMode ? (
                             <div className="modal-content">
                                 <img
-                                    src={this.state.editImage.thumbnailSrc}
+                                    src={this.state.editImage.fullImageSource}
                                     alt="img.title"
                                 />
                                 <div>{this.state.editImage.name}</div>

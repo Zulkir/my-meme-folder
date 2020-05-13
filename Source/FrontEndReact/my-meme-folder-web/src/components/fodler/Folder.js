@@ -136,7 +136,9 @@ export default class Folder extends React.Component {
                     style={{display: this.state.collapsed ? 'none' : 'block'}}
                 >{
                     this.props.folder.children.map(child => {
-                        const childFullPath = `${fulLPath}/${child.name}`;
+                        const childFullPath = fulLPath.endsWith("/")
+                            ? `${fulLPath}${child.name}`
+                            : `${fulLPath}/${child.name}`;
                         return (
                             <Folder
                                 folder={child}
