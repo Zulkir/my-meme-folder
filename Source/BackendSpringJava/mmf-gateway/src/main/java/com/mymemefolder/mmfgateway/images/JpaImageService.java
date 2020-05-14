@@ -39,7 +39,7 @@ public class JpaImageService implements ImageService {
             var thumbnailBase64 = fileToThumbnailBase64(data);
             var key = UUID.randomUUID().toString();
             try (var dataStream = new ByteArrayInputStream(data)) {
-                storageService.saveImage(key, dataStream);
+                storageService.saveImage(String.valueOf(user.getId()), key, dataStream);
             }
             var image = new Image();
             image.setKey(key);

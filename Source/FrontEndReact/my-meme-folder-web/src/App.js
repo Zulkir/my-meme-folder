@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import axios from "axios";
 import HomePage from "./pages/HomePage";
 import MyFolderPage from "./pages/MyFolderPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import userService from "./services/UserService";
+import LogoutPage from "./pages/LogoutPage";
 
 class App extends React.Component {
     constructor (props) {
@@ -16,12 +17,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("/api/user-info")
-            .then(res => {
-                this.setState({userInfo: res.data})
-            })
-            .catch(e => {
-            });
+        userService.subscribeToChange(u => this.setState({userInfo: u}));
+        userService.refreshUserInfo();
     }
 
     render() {
@@ -51,6 +48,7 @@ class App extends React.Component {
                     </nav>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/login" component={LoginPage} />
+                    <Route path="/logout" component={LogoutPage} />
                     <Route path="/register" component={RegisterPage} />
                     <Route path="/folder/:username" component={MyFolderPage} />
                 </div>

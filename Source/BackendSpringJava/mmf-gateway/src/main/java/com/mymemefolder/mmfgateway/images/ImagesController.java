@@ -44,7 +44,7 @@ public class ImagesController {
             throws DataNotFoundException {
         var image = imageService.getByKey(key).orElseThrow(() -> new DataNotFoundException("Image was not found"));
         // todo: check user privacy settings
-        var streamWithLength = imageStorageService.readImageByKey(image.getKey());
+        var streamWithLength = imageStorageService.readImageByKey(image.getUserId(), image.getKey());
         var stream = streamWithLength.getStream();
         var length = streamWithLength.getLength();
         var inputStreamResource = new InputStreamResource(stream);

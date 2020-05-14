@@ -1,12 +1,14 @@
 package com.mymemefolder.mmfgateway.images;
 
 public class ImageViewData {
+    private String id;
     private String name;
     private String tags;
     private String thumbnailSrc;
     private String fullImageSource;
 
-    public ImageViewData(String name, String tags, String thumbnailSrc, String fullImageSource) {
+    public ImageViewData(String id, String name, String tags, String thumbnailSrc, String fullImageSource) {
+        this.id = id;
         this.name = name;
         this.tags = tags;
         this.thumbnailSrc = thumbnailSrc;
@@ -14,6 +16,7 @@ public class ImageViewData {
     }
 
     public ImageViewData(Image image) {
+        id = String.valueOf(image.getId());
         name = image.getName();
         tags = image.getTags();
         thumbnailSrc = image.getThumbnailSource();

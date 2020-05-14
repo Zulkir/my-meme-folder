@@ -27,7 +27,10 @@ public class CTempImageStorageService implements ImageStorageService {
     @Override
     public void saveImage(String userId, String key, InputStream stream) throws InvalidOperationException {
         try {
-            var file = new File("C:/Temp/mmf-sss/" + userId + "/" + key);
+            var folderPath = "C:/Temp/mmf-sss/" + userId + "/";
+            var folder = new File(folderPath);
+            folder.mkdirs();
+            var file = new File(folderPath + key);
             if (file.exists())
                 throw new InvalidOperationException("File with this key already exists");
             try (var outputStream = new FileOutputStream(file)) {

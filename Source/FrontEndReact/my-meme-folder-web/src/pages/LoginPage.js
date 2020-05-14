@@ -3,6 +3,7 @@ import "./LoginRegisterPages.css"
 import {Link} from "react-router-dom";
 import axios from "axios";
 import querystring from 'querystring';
+import userService from "../services/UserService.js";
 
 export default class LoginPage extends React.Component {
     constructor(props) {
@@ -33,6 +34,7 @@ export default class LoginPage extends React.Component {
                 password: this.state.password
             })
         }).then(res => {
+            userService.refreshUserInfo();
             // todo: to history.push with username changed notification
             window.location.href = `/folder/${this.state.username}/`;
         }).catch(e => {
