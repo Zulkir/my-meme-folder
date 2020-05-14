@@ -7,7 +7,7 @@ import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import java.io.InputStream;
 
 public interface ImageStorageService {
-    InputStreamWithLength readImageByKey(String key) throws DataNotFoundException;
-    void saveImage(String key, InputStream stream) throws InvalidOperationException;
+    InputStreamWithLength readImageByKey(String userId, String key) throws DataNotFoundException;
+    void saveImage(String userId, String key, InputStream stream) throws InvalidOperationException;
 }
 

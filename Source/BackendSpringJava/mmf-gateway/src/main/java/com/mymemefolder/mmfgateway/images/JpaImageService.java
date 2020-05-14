@@ -21,7 +21,7 @@ public class JpaImageService implements ImageService {
 
     @Override
     public List<Image> getAllByPath(User user, String path) {
-        return repository.findByUserFolderPath(user.getId() + path);
+        return repository.findByUserFolderPath(toUserFolderPath(user, path));
     }
 
     @Override
@@ -45,9 +45,9 @@ public class JpaImageService implements ImageService {
             image.setKey(key);
             image.setName(name);
             image.setTags("");
-            image.setUserFolderPath(user.getId() + path);
+            image.setUserFolderPath(toUserFolderPath(user, path));
             image.setThumbnailSource("data:image/jpg;base64, " + thumbnailBase64);
-            image.setFullImageSource("/images/" + key);
+            image.setFullImageSource("/api/images/" + key);
             repository.save(image);
             return image;
         } catch (IOException e) {
@@ -64,6 +64,10 @@ public class JpaImageService implements ImageService {
     @Override
     public void delete(String key) {
         // todo
+    }
+
+    private static String toUserFolderPath(User user, String path) {
+        return String.format("%d%s", user.getId(), path);
     }
 
     private static String fileToThumbnailBase64(byte[] fileData) throws IOException {
