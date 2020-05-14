@@ -18,6 +18,10 @@ export default class ImageList extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.folderPath === prevProps.folderPath)
             return;
+        this.refreshList();
+    }
+
+    refreshList = () => {
         const username = this.props.username;
         axios.get(`/api/folder/${username}/images?path=${encodeURI(this.props.folderPath)}`)
             .then(res => {
@@ -46,7 +50,10 @@ export default class ImageList extends React.Component {
         return (
               <div className="image-list-overall">
                   <div className="image-list-item">
-                        <ImageUploader />
+                        <ImageUploader
+                            getPath={() => this.props.folderPath}
+                            onUploaded={this.refreshList}
+                        />
                   </div>{
                     this.state.imagesWithThumbnails.map(img => (
                         <div

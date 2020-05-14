@@ -4,15 +4,15 @@ import com.mymemefolder.mmfgateway.security.DataIsPrivateException;
 import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.users.User;
 import com.mymemefolder.mmfgateway.users.UserService;
+import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +51,19 @@ public class ImagesController {
         var httpHeaders = new HttpHeaders();
         httpHeaders.setContentLength(length);
         return new ResponseEntity<>(inputStreamResource, httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/images/")
+    @ResponseBody
+    public ImageViewData UploadImage(Principal principal, String path, String name, @RequestParam("file") MultipartFile file)
+            throws DataIsPrivateException, DataNotFoundException, IOException, InvalidOperationException {
+        if (principal == null)
+            throw new DataIsPrivateException("Must be logged in to upload images");
+        var user = userService.getUserByName(principal.getName());
+        try (var stream = file.getInputStream()) {
+            var image = imageService.addNew(user, path, name, stream);
+            return new ImageViewData(image);
+        }
     }
 
     private User getAuthorizedUser(Principal principal, String requestedUsername)
