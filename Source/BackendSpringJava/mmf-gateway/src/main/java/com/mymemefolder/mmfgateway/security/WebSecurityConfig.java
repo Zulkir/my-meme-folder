@@ -42,6 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> response.setStatus(200))
                 .failureHandler((request, response, exception) -> response.setStatus(403))
                 .and()
+            .logout()
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> response.setStatus(200))
+                .and()
             // todo: enable for production
             .csrf()
                 .disable();

@@ -53,6 +53,16 @@ public class ImagesController {
         return new ResponseEntity<>(inputStreamResource, httpHeaders, HttpStatus.OK);
     }
 
+    @PutMapping("/api/images/{key}")
+    public void updateImageFields(Principal principal, @PathVariable String key, @RequestBody ImageViewData updatedData)
+            throws DataNotFoundException {
+        var image = imageService.getByKey(key).orElseThrow(() -> new DataNotFoundException("Image was not found"));
+        // todo: check user privacy settings
+        image.setName(updatedData.getName());
+        image.setTags(updatedData.getTags());
+        imageService.update(image);
+    }
+
     @PostMapping("/api/images/")
     @ResponseBody
     public ImageViewData UploadImage(Principal principal, String path, String name, @RequestParam("file") MultipartFile file)
@@ -61,7 +71,7 @@ public class ImagesController {
             throw new DataIsPrivateException("Must be logged in to upload images");
         var user = userService.getUserByName(principal.getName());
         try (var stream = file.getInputStream()) {
-            var image = imageService.addNew(user, path, name, stream);
+            var image = imageService.create(user, path, name, stream);
             return new ImageViewData(image);
         }
     }

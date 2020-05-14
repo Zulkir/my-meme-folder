@@ -71,4 +71,9 @@ public class Image {
     public void setThumbnailSource(String thumbnailSource) {
         this.thumbnailSource = thumbnailSource;
     }
+
+    public String getUserId() {
+        var userFolderPath = getUserFolderPath();
+        return userFolderPath.substring(0, userFolderPath.indexOf("/"));
+    }
 }

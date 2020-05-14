@@ -11,7 +11,7 @@ export default class ImageList extends React.Component {
         this.state = {
             imagesWithThumbnails: [],
             viewMode: false,
-            viewImage: null
+            viewImage: null,
         };
     }
 
@@ -23,12 +23,9 @@ export default class ImageList extends React.Component {
 
     refreshList = () => {
         const username = this.props.username;
-        axios.get(`/api/folder/${username}/images?path=${encodeURI(this.props.folderPath)}`)
+        return axios.get(`/api/folder/${username}/images?path=${encodeURI(this.props.folderPath)}`)
             .then(res => {
                 this.setState({imagesWithThumbnails: res.data})
-            })
-            .catch(e => {
-                console.log(e);
             });
     }
 
@@ -44,6 +41,25 @@ export default class ImageList extends React.Component {
             viewMode: false,
             viewImage: null
         })
+    }
+
+    setTextState = (field, event) => {
+        this.setState({
+            viewImage: {
+                ...this.state.viewImage,
+                [field]: event.target.value
+            }
+        });
+    }
+
+    saveImage = (event) => {
+        event.preventDefault();
+        axios.put("/api/images/" + this.state.viewImage.key, {
+            name: this.state.viewImage.name,
+            tags: this.state.viewImage.tags
+        })
+            .then(res => this.refreshList())
+            .then(() => this.setState({viewMode: false, viewImage: null}));
     }
 
     render() {
@@ -90,10 +106,31 @@ export default class ImageList extends React.Component {
                                 alt="img.title"
                             />{
                             canEdit ? (
-                                <React.Fragment>
-                                    <div><input type="text" value={this.state.viewImage.name}/></div>
-                                    <div><input type="text" value={this.state.viewImage.tags}/></div>
-                                </React.Fragment>
+                                <form onSubmit={this.saveImage}>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            value={this.state.viewImage.name}
+                                            onChange={this.setTextState.bind(this, "name")}
+                                            placeholder="Name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            value={this.state.viewImage.tags}
+                                            onChange={this.setTextState.bind(this, "tags")}
+                                            placeholder="Tags"
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="submit"
+                                            className="submit"
+                                            value="Save"
+                                        />
+                                    </div>
+                                </form>
                             ) : (
                                 <React.Fragment>
                                     <div>{this.state.viewImage.name}</div>

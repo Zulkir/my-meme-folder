@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ImageService {
     List<Image> getAllByPath(User user, String folderPath);
     Optional<Image> getByKey(String key);
-    Image addNew(User user, String path, String name, InputStream stream) throws InvalidOperationException;
+    Image create(User user, String path, String name, InputStream stream) throws InvalidOperationException;
+    void update(Image image);
     void delete(String key);
 }

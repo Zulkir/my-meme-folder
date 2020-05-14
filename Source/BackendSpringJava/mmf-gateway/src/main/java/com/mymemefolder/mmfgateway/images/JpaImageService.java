@@ -30,7 +30,7 @@ public class JpaImageService implements ImageService {
     }
 
     @Override
-    public Image addNew(User user, String path, String name, InputStream stream) throws InvalidOperationException {
+    public Image create(User user, String path, String name, InputStream stream) throws InvalidOperationException {
         try {
             var maxSize = 1 << 22;
             var data = stream.readNBytes(maxSize);
@@ -59,6 +59,11 @@ public class JpaImageService implements ImageService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void update(Image image) {
+        repository.save(image);
     }
 
     @Override

@@ -36,11 +36,11 @@
     display: inline-block;
     position: fixed;
     top: 100px;
-    bottom: 100px;
+    /*bottom: 100px;*/
     left: 0;
     right: 0;
     width: 720px;
-    /*height: 800px;*/
+    /*height: 540px;*/
     margin: auto;
 
     background-color: #3b1616;
@@ -65,5 +65,45 @@
 .modal-content img {
     margin: 10px;
     width: 680px;
+}
 
+.modal-content div input {
+    width: 300px;
+
+    border-width: 0;
+    padding: 10px;
+    margin: 5px;
+
+    font-size: 16px;
+
+    border-radius: 16px;
+}
+
+.modal-content div input:focus {
+    outline: none;
+    /*border-width: 4px;
+    margin: 1px;*/
+
+    background-color: #fffce0;
+    border-color: #a33900;
+}
+
+.modal-content div input.submit {
+    width: 320px;
+    margin: 5px;
+
+    background-color: #a33900;
+
+    color: white;
+    font-weight: bolder;
+
+    cursor: pointer;
+}
+
+.modal-content div input.submit:hover {
+    background-color: #c94500;
+}
+
+.modal-content div input.submit:focus {
+    background-color: #c94500;
 }
