@@ -11,7 +11,7 @@ export default function ImageUploader(props) {
         const formData = new FormData();
         const file = acceptedFiles[0];
         formData.append("file", file);
-        axios.post(`/api/images/?path=${encodeURI(props.getPath())}&name=${file.name}`, formData, {
+        axios.post(`/api/images/?folderId=${props.getFolderId()}&name=${file.name}`, formData, {
             headers:{
                 "Content-Type": "multipart/form-data"
             }

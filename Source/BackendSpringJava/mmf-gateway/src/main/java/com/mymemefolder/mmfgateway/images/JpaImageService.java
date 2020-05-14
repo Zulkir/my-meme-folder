@@ -20,8 +20,8 @@ public class JpaImageService implements ImageService {
     }
 
     @Override
-    public List<Image> getAllByPath(User user, String path) {
-        return repository.findByUserFolderPath(toUserFolderPath(user, path));
+    public List<Image> getAllByUserFolderId(int userId, int folderId) {
+        return repository.findByUserFolderPath(Image.userFolderId(userId, folderId));
     }
 
     @Override
@@ -30,7 +30,7 @@ public class JpaImageService implements ImageService {
     }
 
     @Override
-    public Image create(User user, String path, String name, InputStream stream) throws InvalidOperationException {
+    public Image create(int userId, int folderId, String name, InputStream stream) throws InvalidOperationException {
         try {
             var maxSize = 1 << 22;
             var data = stream.readNBytes(maxSize);
@@ -39,13 +39,13 @@ public class JpaImageService implements ImageService {
             var thumbnailBase64 = fileToThumbnailBase64(data);
             var key = UUID.randomUUID().toString();
             try (var dataStream = new ByteArrayInputStream(data)) {
-                storageService.saveImage(String.valueOf(user.getId()), key, dataStream);
+                storageService.saveImage(userId, key, dataStream);
             }
             var image = new Image();
             image.setKey(key);
             image.setName(name);
             image.setTags("");
-            image.setUserFolderPath(toUserFolderPath(user, path));
+            image.setUserFolderPath(Image.userFolderId(userId, folderId));
             image.setThumbnailSource("data:image/jpg;base64, " + thumbnailBase64);
             image.setFullImageSource("/api/images/" + key);
             repository.save(image);
@@ -69,10 +69,6 @@ public class JpaImageService implements ImageService {
     @Override
     public void delete(String key) {
         // todo
-    }
-
-    private static String toUserFolderPath(User user, String path) {
-        return String.format("%d%s", user.getId(), path);
     }
 
     private static String fileToThumbnailBase64(byte[] fileData) throws IOException {

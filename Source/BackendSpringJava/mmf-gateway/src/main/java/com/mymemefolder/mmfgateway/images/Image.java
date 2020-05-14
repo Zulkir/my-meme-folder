@@ -72,8 +72,12 @@ public class Image {
         this.thumbnailSource = thumbnailSource;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         var userFolderPath = getUserFolderPath();
-        return userFolderPath.substring(0, userFolderPath.indexOf("/"));
+        return Integer.parseInt(userFolderPath.substring(0, userFolderPath.indexOf("-")));
+    }
+
+    public static String userFolderId(int userId, int folderId) {
+        return String.format("%d-%d", userId, folderId);
     }
 }

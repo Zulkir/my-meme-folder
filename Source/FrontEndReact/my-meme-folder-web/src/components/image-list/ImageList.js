@@ -23,7 +23,7 @@ export default class ImageList extends React.Component {
 
     refreshList = () => {
         const username = this.props.username;
-        return axios.get(`/api/folder/${username}/images?path=${encodeURI(this.props.folderPath)}`)
+        return axios.get(`/api/folder/${username}/images?folderId=${this.props.folderId}`)
             .then(res => {
                 this.setState({imagesWithThumbnails: res.data})
             });
@@ -70,7 +70,7 @@ export default class ImageList extends React.Component {
                 canEdit ? (
                     <div className="image-list-item">
                         <ImageUploader
-                            getPath={() => this.props.folderPath}
+                            getFolderId={() => this.props.folderId}
                             onUploaded={this.refreshList}
                         />
                     </div>

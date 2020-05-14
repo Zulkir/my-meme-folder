@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Folder {
+    private Integer id;
     private String name;
     private List<Folder> children;
 
     public Folder() {}
 
-    public Folder(String name) {
+    public Folder(Integer id, String name) {
+        this.id = id;
         this.name = name;
         children = new ArrayList<>();
     }
 
-    public Folder(String name, List<Folder> children) {
+    public Folder(Integer id, String name, List<Folder> children) {
+        this.id = id;
         this.name = name;
         this.children = children;
     }
+
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() {
         return name;

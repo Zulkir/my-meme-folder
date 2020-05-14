@@ -5,11 +5,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mymemefolder.mmfgateway.users.User;
 import com.mymemefolder.mmfgateway.users.UserService;
+import com.mymemefolder.mmfgateway.utils.Ref;
 import com.mymemefolder.mmfgateway.utils.UncheckedWrapperException;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class UserFolderService implements FolderService {
@@ -43,7 +45,7 @@ public class UserFolderService implements FolderService {
                     .orElseThrow(() -> new InvalidOperationException("Invalid path"))
                     .getChildren();
         }
-        childFolders.add(new Folder(newFolderName));
+        childFolders.add(new Folder(generateNextId(rootFolders), newFolderName));
         setRootFolders(user, rootFolders);
         return rootFolders;
     }
@@ -104,9 +106,19 @@ public class UserFolderService implements FolderService {
 
     private List<Folder> getRootFolders(User user) {
         try {
-            return jsonMapper.readValue(user.getFolderStructure(), new TypeReference<>(){});
+            var folders = jsonMapper.<List<Folder>>readValue(user.getFolderStructure(), new TypeReference<>(){});
+            if (folders.stream().anyMatch(f -> f.getId() == null))
+                generateIds(folders, new Ref<>(1));
+            return folders;
         } catch (JsonProcessingException e) {
             throw new UncheckedWrapperException(e);
+        }
+    }
+
+    private static void generateIds(List<Folder> folders, Ref<Integer> next) {
+        for (var folder : folders) {
+            folder.setId(next.val++);
+            generateIds(folder.getChildren(), next);
         }
     }
 
@@ -118,5 +130,17 @@ public class UserFolderService implements FolderService {
         } catch (JsonProcessingException e) {
             throw new UncheckedWrapperException(e);
         }
+    }
+
+    private static Stream<Folder> streamFolders(Folder root) {
+        return Stream.concat(Stream.of(root), streamFolders(root.getChildren()));
+    }
+
+    private static Stream<Folder> streamFolders(List<Folder> folders) {
+        return folders.stream().flatMap(UserFolderService::streamFolders);
+    }
+
+    private static int generateNextId(List<Folder> folders) {
+        return streamFolders(folders).mapToInt(Folder::getId).max().orElse(0) + 1;
     }
 }

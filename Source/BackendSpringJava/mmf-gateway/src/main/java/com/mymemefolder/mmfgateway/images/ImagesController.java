@@ -31,10 +31,10 @@ public class ImagesController {
 
     @GetMapping("/api/folder/{username}/images")
     @ResponseBody
-    public List<ImageViewData> getImageList(Principal principal, @PathVariable String username, String path)
+    public List<ImageViewData> getImageList(Principal principal, @PathVariable String username, Integer folderId)
             throws DataNotFoundException, DataIsPrivateException {
         var user = getAuthorizedUser(principal, username);
-        return imageService.getAllByPath(user, path).stream()
+        return imageService.getAllByUserFolderId(user.getId(), folderId).stream()
                 .map(ImageViewData::new)
                 .collect(Collectors.toList());
     }
@@ -65,13 +65,14 @@ public class ImagesController {
 
     @PostMapping("/api/images/")
     @ResponseBody
-    public ImageViewData UploadImage(Principal principal, String path, String name, @RequestParam("file") MultipartFile file)
+    public ImageViewData UploadImage(Principal principal, Integer folderId, String name,
+                                     @RequestParam("file") MultipartFile file)
             throws DataIsPrivateException, DataNotFoundException, IOException, InvalidOperationException {
         if (principal == null)
             throw new DataIsPrivateException("Must be logged in to upload images");
         var user = userService.getUserByName(principal.getName());
         try (var stream = file.getInputStream()) {
-            var image = imageService.create(user, path, name, stream);
+            var image = imageService.create(user.getId(), folderId, name, stream);
             return new ImageViewData(image);
         }
     }

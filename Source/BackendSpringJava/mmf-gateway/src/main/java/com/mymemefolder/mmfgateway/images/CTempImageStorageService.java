@@ -11,7 +11,7 @@ import java.io.*;
 @Service
 public class CTempImageStorageService implements ImageStorageService {
     @Override
-    public InputStreamWithLength readImageByKey(String userId, String key) throws DataNotFoundException {
+    public InputStreamWithLength readImageByKey(int userId, String key) throws DataNotFoundException {
         try {
             var file = new File("C:/Temp/mmf-sss/" + userId + "/" + key);
             if (!file.exists())
@@ -25,7 +25,7 @@ public class CTempImageStorageService implements ImageStorageService {
     }
 
     @Override
-    public void saveImage(String userId, String key, InputStream stream) throws InvalidOperationException {
+    public void saveImage(int userId, String key, InputStream stream) throws InvalidOperationException {
         try {
             var folderPath = "C:/Temp/mmf-sss/" + userId + "/";
             var folder = new File(folderPath);

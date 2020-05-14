@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ImageService {
-    List<Image> getAllByPath(User user, String folderPath);
+    List<Image> getAllByUserFolderId(int userId, int folderId);
     Optional<Image> getByKey(String key);
-    Image create(User user, String path, String name, InputStream stream) throws InvalidOperationException;
+    Image create(int userId, int folderId, String name, InputStream stream) throws InvalidOperationException;
     void update(Image image);
     void delete(String key);
 }

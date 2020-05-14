@@ -29,6 +29,20 @@ export default class MyFolderPage extends React.Component {
             });
     }
 
+    folderIdFromPath = path => {
+        let folders = this.state.structure;
+        let subPath = path.substr(1);
+        let nextSlashIndex = subPath.indexOf("/");
+        while (nextSlashIndex >= 0) {
+            const childName = subPath.substr(0, nextSlashIndex);
+            subPath = subPath.substr(nextSlashIndex + 1);
+            nextSlashIndex = subPath.indexOf("/");
+            folders = folders.find(f => f.name === childName).children;
+        }
+        const folder = folders.find(f => f.name === subPath);
+        return folder ? folder.id : 0;
+    }
+
     updateTree = (newTree) => {
         this.setState({structure: newTree});
     }
@@ -46,6 +60,7 @@ export default class MyFolderPage extends React.Component {
                         folder={{name: "My Folder", children: this.state.structure}}
                         fullPath="/"
                         currentPath={this.state.currentPath}
+                        folderId={this.folderIdFromPath(this.state.currentPath)}
                         username={username}
                         onSelect={this.move}
                         onUpdate={this.updateTree}
@@ -55,6 +70,7 @@ export default class MyFolderPage extends React.Component {
                 <main style={mainStyle}>
                     <ImageList
                         folderPath={this.state.currentPath}
+                        folderId={this.folderIdFromPath(this.state.currentPath)}
                         username={this.props.match.params.username}
                     />
                 </main>

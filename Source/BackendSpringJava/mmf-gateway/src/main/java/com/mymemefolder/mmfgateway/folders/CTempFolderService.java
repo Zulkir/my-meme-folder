@@ -47,6 +47,7 @@ public class CTempFolderService implements FolderService {
     private static Folder folderFromFileSystem(File realFolder) {
         var subDirectories = Optional.ofNullable(realFolder.listFiles(File::isDirectory)).orElseGet(() -> new File[0]);
         return new Folder(
+                realFolder.getName().hashCode(),
                 realFolder.getName(),
                 Arrays.stream(subDirectories)
                         .map(CTempFolderService::folderFromFileSystem)
