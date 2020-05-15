@@ -23,7 +23,7 @@ export default function ImageUploader(props) {
         }).catch(e => {
             console.log(e);
         });
-    }, []);
+    }, [props]);
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 

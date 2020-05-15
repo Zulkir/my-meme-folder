@@ -3,23 +3,26 @@ package com.mymemefolder.mmfgateway.folders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mymemefolder.mmfgateway.images.ImageService;
 import com.mymemefolder.mmfgateway.users.User;
 import com.mymemefolder.mmfgateway.users.UserService;
-import com.mymemefolder.mmfgateway.utils.Ref;
 import com.mymemefolder.mmfgateway.utils.UncheckedWrapperException;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import org.springframework.stereotype.Service;
 
+import javax.management.openmbean.InvalidOpenTypeException;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Service
 public class UserFolderService implements FolderService {
     private final UserService userService;
+    private final ImageService imageService;
     private final ObjectMapper jsonMapper;
 
-    public UserFolderService(UserService userService) {
+    public UserFolderService(UserService userService, ImageService imageService) {
         this.userService = userService;
+        this.imageService = imageService;
         jsonMapper = new ObjectMapper();
     }
 
@@ -99,26 +102,27 @@ public class UserFolderService implements FolderService {
         if (siblings == null)
             throw new InvalidOperationException("Invalid path");
         var folderNameToRemove = childName;
-        siblings.removeIf(f -> f.getName().equals(folderNameToRemove));
+        var folderToDelete = siblings.stream()
+                .filter(f -> f.getName().equals(folderNameToRemove))
+                .findFirst()
+                .orElseThrow(() -> new InvalidOpenTypeException("Failed to find the folder"));
+        deleteFolder(user.getId(), siblings, folderToDelete);
         setRootFolders(user, rootFolders);
         return rootFolders;
     }
 
-    private List<Folder> getRootFolders(User user) {
-        try {
-            var folders = jsonMapper.<List<Folder>>readValue(user.getFolderStructure(), new TypeReference<>(){});
-            if (folders.stream().anyMatch(f -> f.getId() == null))
-                generateIds(folders, new Ref<>(1));
-            return folders;
-        } catch (JsonProcessingException e) {
-            throw new UncheckedWrapperException(e);
-        }
+    private void deleteFolder(int userId, List<Folder> siblings, Folder folder) {
+        while (folder.getChildren().size() > 0)
+            deleteFolder(userId, folder.getChildren(), folder.getChildren().get(0));
+        imageService.deleteAllByUserFolderId(userId, folder.getId());
+        siblings.remove(folder);
     }
 
-    private static void generateIds(List<Folder> folders, Ref<Integer> next) {
-        for (var folder : folders) {
-            folder.setId(next.val++);
-            generateIds(folder.getChildren(), next);
+    private List<Folder> getRootFolders(User user) {
+        try {
+            return jsonMapper.readValue(user.getFolderStructure(), new TypeReference<>(){});
+        } catch (JsonProcessingException e) {
+            throw new UncheckedWrapperException(e);
         }
     }
 

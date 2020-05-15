@@ -83,14 +83,16 @@ const userInfoStyle = {
 }
 
 const navStyle = {
-  padding: '10px',
-  fontSize: '18px',
-  fontWeight: 'bold',
-  color: '#fff',
-  backgroundColor: '#820',
-  borderWidth: '5px 0px 0px 0px',
-  borderColor: '#410',
-  borderStyle: 'solid',
+    display: 'none',
+
+    padding: '10px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: '#820',
+    borderWidth: '5px 0px 0px 0px',
+    borderColor: '#410',
+    borderStyle: 'solid'
 }
 
 const menuItemStyle = {

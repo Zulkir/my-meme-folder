@@ -62,6 +62,13 @@ export default class ImageList extends React.Component {
             .then(() => this.setState({viewMode: false, viewImage: null}));
     }
 
+    deleteImage = (event) => {
+        event.preventDefault();
+        axios.delete("/api/images/" + this.state.viewImage.key)
+            .then(res => this.refreshList())
+            .then(() => this.setState({viewMode: false, viewImage: null}));
+    }
+
     render() {
         const userInfo = userService.getUserInfo();
         const canEdit = userInfo && userInfo.username === this.props.username;
@@ -106,31 +113,42 @@ export default class ImageList extends React.Component {
                                 alt="img.title"
                             />{
                             canEdit ? (
-                                <form onSubmit={this.saveImage}>
-                                    <div>
-                                        <input
-                                            type="text"
-                                            value={this.state.viewImage.name}
-                                            onChange={this.setTextState.bind(this, "name")}
-                                            placeholder="Name"
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            type="text"
-                                            value={this.state.viewImage.tags}
-                                            onChange={this.setTextState.bind(this, "tags")}
-                                            placeholder="Tags"
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            type="submit"
-                                            className="submit"
-                                            value="Save"
-                                        />
-                                    </div>
-                                </form>
+                                <React.Fragment>
+                                    <form onSubmit={this.saveImage}>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={this.state.viewImage.name}
+                                                onChange={this.setTextState.bind(this, "name")}
+                                                placeholder="Name"
+                                            />
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={this.state.viewImage.tags}
+                                                onChange={this.setTextState.bind(this, "tags")}
+                                                placeholder="Tags"
+                                            />
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="submit"
+                                                className="submit"
+                                                value="Save"
+                                            />
+                                        </div>
+                                    </form>
+                                    <form onSubmit={this.deleteImage}>
+                                        <div>
+                                            <input
+                                                type="submit"
+                                                className="submit"
+                                                value="Delete"
+                                            />
+                                        </div>
+                                    </form>
+                                </React.Fragment>
                             ) : (
                                 <React.Fragment>
                                     <div>{this.state.viewImage.name}</div>
