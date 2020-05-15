@@ -11,7 +11,7 @@ import java.io.*;
 @Service
 public class CTempImageStorageService implements ImageStorageService {
     @Override
-    public InputStreamWithLength readImageByKey(int userId, String key) throws DataNotFoundException {
+    public InputStreamWithLength readByKey(int userId, String key) throws DataNotFoundException {
         try {
             var file = new File("C:/Temp/mmf-sss/" + userId + "/" + key);
             if (!file.exists())
@@ -25,11 +25,12 @@ public class CTempImageStorageService implements ImageStorageService {
     }
 
     @Override
-    public void saveImage(int userId, String key, InputStream stream) throws InvalidOperationException {
+    public void save(int userId, String key, InputStream stream) throws InvalidOperationException {
         try {
             var folderPath = "C:/Temp/mmf-sss/" + userId + "/";
             var folder = new File(folderPath);
-            folder.mkdirs();
+            if (!folder.exists() && !folder.mkdirs())
+                throw new IOException("Failed to create a folder");
             var file = new File(folderPath + key);
             if (file.exists())
                 throw new InvalidOperationException("File with this key already exists");
@@ -37,6 +38,22 @@ public class CTempImageStorageService implements ImageStorageService {
                 stream.transferTo(outputStream);
             }
         } catch (IOException e) {
+            throw new UncheckedWrapperException(e);
+        }
+    }
+
+    @Override
+    public void delete(int userId, String key) throws DataNotFoundException {
+        try {
+            var file = new File("C:/Temp/mmf-sss/" + userId + "/" + key);
+            if (!file.exists())
+                throw new DataNotFoundException("Image was not found");
+            if (!file.delete())
+                throw new IOException("Failed to delete the file");
+        } catch (FileNotFoundException e) {
+            throw new DataNotFoundException("Image was not found");
+        }
+        catch (IOException e) {
             throw new UncheckedWrapperException(e);
         }
     }

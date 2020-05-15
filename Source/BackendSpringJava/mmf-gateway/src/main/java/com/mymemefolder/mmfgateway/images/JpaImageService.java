@@ -1,10 +1,11 @@
 package com.mymemefolder.mmfgateway.images;
 
-import com.mymemefolder.mmfgateway.users.User;
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import com.mymemefolder.mmfgateway.utils.UncheckedWrapperException;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.util.*;
@@ -39,7 +40,7 @@ public class JpaImageService implements ImageService {
             var thumbnailBase64 = fileToThumbnailBase64(data);
             var key = UUID.randomUUID().toString();
             try (var dataStream = new ByteArrayInputStream(data)) {
-                storageService.saveImage(userId, key, dataStream);
+                storageService.save(userId, key, dataStream);
             }
             var image = new Image();
             image.setKey(key);
@@ -66,9 +67,28 @@ public class JpaImageService implements ImageService {
         repository.save(image);
     }
 
+    //@Transactional
     @Override
-    public void delete(String key) {
-        // todo
+    public void delete(String key) throws DataNotFoundException {
+        var image = repository.findByKey(key);
+        if (image == null)
+            throw new DataNotFoundException("Image not found");
+        repository.deleteById(image.getId());
+        storageService.delete(image.getUserId(), key);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllByUserFolderId(int userId, int folderId) {
+        var imagesToDelete = getAllByUserFolderId(userId, folderId);
+        for (var image : imagesToDelete) {
+            try {
+                storageService.delete(userId, image.getKey());
+            } catch (DataNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        repository.deleteByUserFolderPath(Image.userFolderId(userId, folderId));
     }
 
     private static String fileToThumbnailBase64(byte[] fileData) throws IOException {

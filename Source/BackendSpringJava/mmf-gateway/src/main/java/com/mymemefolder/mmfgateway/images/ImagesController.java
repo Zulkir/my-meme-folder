@@ -1,6 +1,7 @@
 package com.mymemefolder.mmfgateway.images;
 
 import com.mymemefolder.mmfgateway.security.DataIsPrivateException;
+import com.mymemefolder.mmfgateway.security.UnauthorizedActionException;
 import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.users.User;
 import com.mymemefolder.mmfgateway.users.UserService;
@@ -41,10 +42,12 @@ public class ImagesController {
 
     @GetMapping("/api/images/{key}")
     public ResponseEntity<InputStreamResource> getFullImage(Principal principal, @PathVariable String key)
-            throws DataNotFoundException {
+            throws DataNotFoundException, UnauthorizedActionException {
         var image = imageService.getByKey(key).orElseThrow(() -> new DataNotFoundException("Image was not found"));
-        // todo: check user privacy settings
-        var streamWithLength = imageStorageService.readImageByKey(image.getUserId(), image.getKey());
+        var owner = userService.getUserById(image.getUserId());
+        if (!owner.getImagesArePublic() && (principal == null || !principal.getName().equals(owner.getUsername())))
+            throw new UnauthorizedActionException("The image is private");
+        var streamWithLength = imageStorageService.readByKey(image.getUserId(), image.getKey());
         var stream = streamWithLength.getStream();
         var length = streamWithLength.getLength();
         var inputStreamResource = new InputStreamResource(stream);
@@ -55,9 +58,11 @@ public class ImagesController {
 
     @PutMapping("/api/images/{key}")
     public void updateImageFields(Principal principal, @PathVariable String key, @RequestBody ImageViewData updatedData)
-            throws DataNotFoundException {
+            throws DataNotFoundException, UnauthorizedActionException {
         var image = imageService.getByKey(key).orElseThrow(() -> new DataNotFoundException("Image was not found"));
-        // todo: check user privacy settings
+        var owner = userService.getUserById(image.getUserId());
+        if (principal == null || !principal.getName().equals(owner.getUsername()))
+            throw new UnauthorizedActionException("Cannot update images that do not belong to you");
         image.setName(updatedData.getName());
         image.setTags(updatedData.getTags());
         imageService.update(image);
@@ -65,7 +70,7 @@ public class ImagesController {
 
     @PostMapping("/api/images/")
     @ResponseBody
-    public ImageViewData UploadImage(Principal principal, Integer folderId, String name,
+    public ImageViewData uploadImage(Principal principal, Integer folderId, String name,
                                      @RequestParam("file") MultipartFile file)
             throws DataIsPrivateException, DataNotFoundException, IOException, InvalidOperationException {
         if (principal == null)
@@ -75,6 +80,17 @@ public class ImagesController {
             var image = imageService.create(user.getId(), folderId, name, stream);
             return new ImageViewData(image);
         }
+    }
+
+    @DeleteMapping("/api/images/{key}")
+    @ResponseBody
+    public void deleteImage(Principal principal, @PathVariable String key)
+            throws DataNotFoundException, UnauthorizedActionException {
+        var image = imageService.getByKey(key).orElseThrow(() -> new DataNotFoundException("Image was not found"));
+        var owner = userService.getUserById(image.getUserId());
+        if (principal == null || !principal.getName().equals(owner.getUsername()))
+            throw new UnauthorizedActionException("Cannot update images that do not belong to you");
+        imageService.delete(key);
     }
 
     private User getAuthorizedUser(Principal principal, String requestedUsername)

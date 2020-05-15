@@ -1,19 +1,18 @@
 import React from "react";
 import "./LoginRegisterPages.css"
-import {Link} from "react-router-dom";
 import axios from "axios";
 import querystring from 'querystring';
 import userService from "../services/UserService.js";
 
 export default class LogoutPage extends React.Component {
-    userInfoHandle = u => this.setState({username: u ? u.username : null})
-
     constructor(props) {
         super(props);
         this.state = {
             username: null
         }
     }
+
+    userInfoHandle = u => this.setState({username: u ? u.username : null})
 
     componentDidMount() {
         userService.subscribeToChange(this.userInfoHandle);
@@ -22,10 +21,6 @@ export default class LogoutPage extends React.Component {
 
     componentWillUnmount() {
         userService.unsubscribeFromChange(this.userInfoHandle);
-    }
-
-    setTextState = (field, event) => {
-        this.setState({[field]: event.target.value});
     }
 
     handleSubmit = (event) => {
@@ -40,7 +35,7 @@ export default class LogoutPage extends React.Component {
                 username: this.state.username,
                 password: this.state.password
             })
-        }).then(res => {
+        }).then(() => {
             userService.refreshUserInfo();
             // todo: to history.push with username changed notification
             window.location.href = `/folder/${this.state.username}/`;

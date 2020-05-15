@@ -28,7 +28,7 @@ export default function ImageUploader(props) {
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 
     return (
-        <div {...getRootProps()} className="image-list-item">
+        <div {...getRootProps()} className="image-list-upload">
             <input {...getInputProps()} />
             <table><tbody><tr><td>{
                 isDragActive ?

@@ -22,6 +22,11 @@ public class UserServiceJpa implements UserService {
     }
 
     @Override
+    public User getUserById(int id) throws DataNotFoundException {
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("User was not found."));
+    }
+
+    @Override
     public User getUserByName(String name) throws DataNotFoundException {
         var user = repository.findByUsername(name);
         if (user == null)

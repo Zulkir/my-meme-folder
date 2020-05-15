@@ -19,7 +19,16 @@
 
 .image-list-item img {
     max-width: 196px;
-    max-height: 196px;
+    max-height: 146px;
+}
+
+.image-list-item-name {
+    height: 50px;
+}
+
+.image-list-upload {
+    width: 210px;
+    height: 200px;
 }
 
 .image-list-item table {
@@ -48,6 +57,12 @@
 
 }
 
+@media only screen and (max-height: 800px) {
+    .modal {
+        top: 0px;
+    }
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -64,7 +79,8 @@
 
 .modal-content img {
     margin: 10px;
-    width: 680px;
+    max-width: 680px;
+    max-height: 400px;
 }
 
 .modal-content div input {

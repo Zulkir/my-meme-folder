@@ -1,6 +1,7 @@
 import React from "react";
 import "./Folder.css";
 import axios from 'axios';
+import userService from "../../services/UserService.js";
 
 export default class Folder extends React.Component {
     constructor(props) {
@@ -68,6 +69,8 @@ export default class Folder extends React.Component {
         const fulLPath = this.props.fullPath;
         const isClickable = this.props.folder.children.length > 0;
         const isSelected = this.props.currentPath === fulLPath;
+        const userInfo = userService.getUserInfo();
+        const canEdit = userInfo && userInfo.username === this.props.username;
         return (
             <div className="folder-wrapper">
                 <table><tbody>
@@ -110,7 +113,7 @@ export default class Folder extends React.Component {
                         }
                     </tr>
                     {
-                        (isSelected && !this.state.editMode) ? (
+                        (canEdit && isSelected && !this.state.editMode) ? (
                             <tr>
                                 <td/>
                                 <td className="folder-current-buttons">

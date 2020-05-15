@@ -15,6 +15,10 @@ export default class ImageList extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.refreshList();
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.folderPath === prevProps.folderPath)
             return;
@@ -93,7 +97,7 @@ export default class ImageList extends React.Component {
                             src={img.thumbnailSrc}
                             alt="img.title"
                         />
-                        <div>{img.name}</div>
+                        <div className="image-list-item-name">{img.name}</div>
                     </div>
                 ))}
                 <Modal

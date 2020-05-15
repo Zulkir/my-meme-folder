@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import userService from "./services/UserService";
 import LogoutPage from "./pages/LogoutPage";
+import AccountSettingsPage from "./pages/AccountSettingsPage";
 
 class App extends React.Component {
     constructor (props) {
@@ -26,18 +27,21 @@ class App extends React.Component {
             <Router>
                 <div className="App">
                     <header style={headerStyle}>
-                        <div style={logoStyle}>My Meme Folder</div>
+                        <Link to="/" style={menuItemStyle}>
+                            <div style={logoStyle}>My Meme Folder</div>
+                        </Link>
                         {
                             this.state.userInfo ? (
                                 <div style={userInfoStyle}>
                                     Welcome, {this.state.userInfo.username}! <br/>
-                                    <Link to={"/logout"}>Logout</Link>
+                                    <Link to="/acc-settings">Account settings</Link> <br/>
+                                    <Link to="/logout">Logout</Link>
                                 </div>
                             ) : (
                                 <div style={userInfoStyle}>
                                     Welcome! Please login to edit your folder. <br/>
-                                    <Link to={"/login"}>Login</Link> <br/>
-                                    <Link to={"/register"}>Register</Link>
+                                    <Link to="/login">Login</Link> <br/>
+                                    <Link to="/register">Register</Link>
                                 </div>
                             )
                         }
@@ -50,6 +54,7 @@ class App extends React.Component {
                     <Route path="/login" component={LoginPage} />
                     <Route path="/logout" component={LogoutPage} />
                     <Route path="/register" component={RegisterPage} />
+                    <Route path="/acc-settings" component={AccountSettingsPage} />
                     <Route path="/folder/:username" component={MyFolderPage} />
                 </div>
             </Router>

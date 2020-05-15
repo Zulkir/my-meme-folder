@@ -44,6 +44,10 @@ main {
     border-radius: 16px;
 }
 
+.login-form div input[type=checkbox] {
+    width: 25px;
+}
+
 .login-form div input:focus {
     outline: none;
     /*border-width: 4px;
