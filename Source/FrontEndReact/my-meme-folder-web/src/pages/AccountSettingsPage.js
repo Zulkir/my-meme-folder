@@ -8,8 +8,8 @@ export default class AccountSettingsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: null,
-            email: null,
+            username: "",
+            email: "",
             folderIsPublic: false,
             imagesArePublic: false,
             errorMessage: null
@@ -26,8 +26,8 @@ export default class AccountSettingsPage extends React.Component {
             });
         else
             this.setState({
-                username: null,
-                email: null,
+                username: "",
+                email: "",
                 folderIsPublic: false,
                 imagesArePublic: false,
             });
@@ -56,7 +56,7 @@ export default class AccountSettingsPage extends React.Component {
             return;
         axios.put('/api/user-info/', {
             username: this.state.username,
-            password: this.state.password,
+            email: this.state.email,
             folderIsPublic: this.state.folderIsPublic,
             imagesArePublic: this.state.imagesArePublic
         }).then(res => {
@@ -78,7 +78,7 @@ export default class AccountSettingsPage extends React.Component {
             return false;
         }
         if (!this.state.email || this.state.email.length === 0) {
-            this.setState({errorMessage: "Password cannot be empty."});
+            this.setState({errorMessage: "Email cannot be empty."});
             return false;
         }
         if (this.state.errorMessage) {
@@ -120,6 +120,7 @@ export default class AccountSettingsPage extends React.Component {
                             <input
                                 type="checkbox"
                                 checked={this.state.folderIsPublic}
+                                //value={this.state.folderIsPublic}
                                 onChange={this.setCheckboxState.bind(this, "folderIsPublic")}
                             />
                             Make the folder public
@@ -130,6 +131,7 @@ export default class AccountSettingsPage extends React.Component {
                             <input
                                 type="checkbox"
                                 checked={this.state.imagesArePublic}
+                                //value={this.state.folderIsPublic}
                                 onChange={this.setCheckboxState.bind(this, "imagesArePublic")}
                             />
                             Make the images public

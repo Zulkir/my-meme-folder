@@ -95,7 +95,7 @@ public class User implements UserDetails {
 
     public Boolean getFolderIsPublic() {
         if (folderIsPublic == null)
-            folderIsPublic = true;
+            folderIsPublic = false;
         return folderIsPublic;
     }
 
@@ -105,7 +105,7 @@ public class User implements UserDetails {
 
     public Boolean getImagesArePublic() {
         if (imagesArePublic == null)
-            imagesArePublic = true;
+            imagesArePublic = false;
         return imagesArePublic;
     }
 

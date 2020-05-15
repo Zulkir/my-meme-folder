@@ -1,5 +1,6 @@
 package com.mymemefolder.mmfgateway.users;
 
+import com.mymemefolder.mmfgateway.security.UnauthorizedActionException;
 import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.utils.ActionResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserServiceJpa implements UserService {
+public class JpaUserService implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceJpa(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public JpaUserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -54,6 +55,15 @@ public class UserServiceJpa implements UserService {
 
     @Override
     public void updateUser(User user) {
+        repository.save(user);
+    }
+
+    @Override
+    public void changePassword(User user, String oldPassword, String newPassword)
+            throws UnauthorizedActionException {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword()))
+            throw new UnauthorizedActionException("Password is incorrect");
+        user.setPassword(passwordEncoder.encode(newPassword));
         repository.save(user);
     }
 }

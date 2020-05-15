@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import userService from "./services/UserService";
 import LogoutPage from "./pages/LogoutPage";
 import AccountSettingsPage from "./pages/AccountSettingsPage";
+import ChangePasswordPage from "./pages/ChangePassword";
 
 class App extends React.Component {
     constructor (props) {
@@ -54,6 +55,7 @@ class App extends React.Component {
                     <Route path="/login" component={LoginPage} />
                     <Route path="/logout" component={LogoutPage} />
                     <Route path="/register" component={RegisterPage} />
+                    <Route path="/change-password" component={ChangePasswordPage} />
                     <Route path="/acc-settings" component={AccountSettingsPage} />
                     <Route path="/folder/:username" component={MyFolderPage} />
                 </div>

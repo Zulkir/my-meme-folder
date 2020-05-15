@@ -98,9 +98,11 @@ export default class LoginPage extends React.Component {
                             value="Submit"
                         />
                     </div>
-                    <div>
-                        <Link to="/forgot-password">Forgot password?</Link>
-                    </div>
+                    {
+                        //<div>
+                        //    <Link to="/forgot-password">Forgot password?</Link>
+                        //</div>
+                    }
                     <div>
                         <Link to="/register">Register</Link>
                     </div>
