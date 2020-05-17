@@ -4,9 +4,11 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.mymemefolder.mmfgateway.secret.SecretConfig;
+import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
 import com.mymemefolder.mmfgateway.utils.InputStreamWithSize;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import org.springframework.stereotype.Service;
@@ -52,11 +54,20 @@ public class AwsS3ImageStorageService implements ImageStorageService {
     }
 
     @Override
-    public InputStreamWithSize readByKey(int userId, String key) {
-        var obj = client.getObject(bucketName, toObjKey(userId, key));
-        var size = obj.getObjectMetadata().getContentLength();
-        var stream = obj.getObjectContent();
-        return new InputStreamWithSize(stream, size);
+    public InputStreamWithSize readByKey(int userId, String key)
+            throws DataNotFoundException {
+        try {
+            var obj = client.getObject(bucketName, toObjKey(userId, key));
+            var size = obj.getObjectMetadata().getContentLength();
+            var stream = obj.getObjectContent();
+            return new InputStreamWithSize(stream, size);
+        }
+        catch (AmazonS3Exception e) {
+            if (e.getStatusCode() == 404)
+                throw new DataNotFoundException("Image was not found");
+            else
+                throw e;
+        }
     }
 
     @Override

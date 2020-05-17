@@ -30,11 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/*").permitAll()
+                .antMatchers("/react/**").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/folder/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/images/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
             .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.setStatus(403))

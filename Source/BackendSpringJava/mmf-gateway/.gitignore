@@ -31,3 +31,5 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/java/com/mymemefolder/mmfgateway/secret/SecretConfigImpl.java
+/src/main/resources/application.properties.prod
+/src/main/resources/static/react/
