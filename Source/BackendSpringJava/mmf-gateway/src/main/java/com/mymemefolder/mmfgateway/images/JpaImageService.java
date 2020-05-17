@@ -33,7 +33,7 @@ public class JpaImageService implements ImageService {
     @Override
     public Image create(int userId, int folderId, String name, InputStream stream) throws InvalidOperationException {
         try {
-            var maxSize = 1 << 22;
+            var maxSize = 4 * (1 << 20);
             var data = stream.readNBytes(maxSize);
             if (data.length >= maxSize)
                 throw new InvalidOperationException("Image data too large.");
@@ -49,6 +49,7 @@ public class JpaImageService implements ImageService {
             image.setUserFolderPath(Image.userFolderId(userId, folderId));
             image.setThumbnailSource("data:image/jpg;base64, " + thumbnailBase64);
             image.setFullImageSource("/api/images/" + key);
+            image.setFileSize(data.length);
             repository.save(image);
             return image;
         } catch (IOException e) {

@@ -15,6 +15,7 @@ public class Image {
     private String fullImageSource;
     @Column(columnDefinition = "TEXT")
     private String thumbnailSource;
+    private Integer fileSize;
 
     public Integer getId() {
         return id;
@@ -79,5 +80,13 @@ public class Image {
 
     public static String userFolderId(int userId, int folderId) {
         return String.format("%d-%d", userId, folderId);
+    }
+
+    public Integer getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Integer fileSize) {
+        this.fileSize = fileSize;
     }
 }
