@@ -49,7 +49,7 @@ public class ImagesController {
             throw new UnauthorizedActionException("The image is private");
         var streamWithLength = imageStorageService.readByKey(image.getUserId(), image.getKey());
         var stream = streamWithLength.getStream();
-        var length = streamWithLength.getLength();
+        var length = streamWithLength.getSize();
         var inputStreamResource = new InputStreamResource(stream);
         var httpHeaders = new HttpHeaders();
         httpHeaders.setContentLength(length);

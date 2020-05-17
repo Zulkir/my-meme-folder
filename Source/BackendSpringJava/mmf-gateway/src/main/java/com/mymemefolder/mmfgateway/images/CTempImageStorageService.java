@@ -1,31 +1,30 @@
 package com.mymemefolder.mmfgateway.images;
 
 import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
-import com.mymemefolder.mmfgateway.utils.InputStreamWithLength;
+import com.mymemefolder.mmfgateway.utils.InputStreamWithSize;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import com.mymemefolder.mmfgateway.utils.UncheckedWrapperException;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 
-@Service
+//@Service
 public class CTempImageStorageService implements ImageStorageService {
     @Override
-    public InputStreamWithLength readByKey(int userId, String key) throws DataNotFoundException {
+    public InputStreamWithSize readByKey(int userId, String key) throws DataNotFoundException {
         try {
             var file = new File("C:/Temp/mmf-sss/" + userId + "/" + key);
             if (!file.exists())
                 throw new DataNotFoundException("Image was not found");
             var size = file.length();
             var stream = new FileInputStream(file);
-            return new InputStreamWithLength(stream, size);
+            return new InputStreamWithSize(stream, size);
         } catch (FileNotFoundException e) {
             throw new DataNotFoundException("Image was not found");
         }
     }
 
     @Override
-    public void save(int userId, String key, InputStream stream) throws InvalidOperationException {
+    public void save(int userId, String key, InputStreamWithSize streamWithSize) throws InvalidOperationException {
         try {
             var folderPath = "C:/Temp/mmf-sss/" + userId + "/";
             var folder = new File(folderPath);
@@ -35,7 +34,7 @@ public class CTempImageStorageService implements ImageStorageService {
             if (file.exists())
                 throw new InvalidOperationException("File with this key already exists");
             try (var outputStream = new FileOutputStream(file)) {
-                stream.transferTo(outputStream);
+                streamWithSize.getStream().transferTo(outputStream);
             }
         } catch (IOException e) {
             throw new UncheckedWrapperException(e);

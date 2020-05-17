@@ -1,6 +1,7 @@
 package com.mymemefolder.mmfgateway.images;
 
 import com.mymemefolder.mmfgateway.utils.DataNotFoundException;
+import com.mymemefolder.mmfgateway.utils.InputStreamWithSize;
 import com.mymemefolder.mmfgateway.utils.InvalidOperationException;
 import com.mymemefolder.mmfgateway.utils.UncheckedWrapperException;
 import net.coobird.thumbnailator.Thumbnails;
@@ -40,7 +41,7 @@ public class JpaImageService implements ImageService {
             var thumbnailBase64 = fileToThumbnailBase64(data);
             var key = UUID.randomUUID().toString();
             try (var dataStream = new ByteArrayInputStream(data)) {
-                storageService.save(userId, key, dataStream);
+                storageService.save(userId, key, new InputStreamWithSize(dataStream, data.length));
             }
             var image = new Image();
             image.setKey(key);

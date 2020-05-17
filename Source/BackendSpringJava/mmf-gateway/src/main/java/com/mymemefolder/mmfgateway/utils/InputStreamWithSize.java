@@ -2,20 +2,20 @@ package com.mymemefolder.mmfgateway.utils;
 
 import java.io.InputStream;
 
-public class InputStreamWithLength {
+public class InputStreamWithSize {
     private final InputStream stream;
-    private final long length;
+    private final long size;
 
-    public InputStreamWithLength(InputStream stream, long length) {
+    public InputStreamWithSize(InputStream stream, long size) {
         this.stream = stream;
-        this.length = length;
+        this.size = size;
     }
 
     public InputStream getStream() {
         return stream;
     }
 
-    public long getLength() {
-        return length;
+    public long getSize() {
+        return size;
     }
 }
